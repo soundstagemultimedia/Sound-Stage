@@ -281,8 +281,10 @@ function renderQueue(){
       +'<div class="q-rank">'+(i+1)+'</div>'
       +'<div class="q-emoji">'+s.e+'</div>'
       +'<div class="q-info"><div class="q-title">'+s.t+'</div><div class="q-artist">'+s.a+'</div></div>'
+      +'<div style="display:flex;gap:3px;flex-shrink:0;">'
       +'<button class="amp-btn" onclick="event.stopPropagation();ampVote('+i+',this)">⚡ '+s.v+'</button>'
-      +'</div>';
+      +'<button class="aura-add" id="aura-'+i+'" onclick="event.stopPropagation();addToAura('+i+',this)">+ Aura</button>'
+      +'</div></div>';
   });
   var ql = document.getElementById('queueList');
   if(ql) ql.innerHTML = html;
@@ -656,5 +658,23 @@ window.showToast = showToast;
 /* ═══ INIT ═══ */
 updateAmps();
 renderQueue();
+   /* Aura add */
+window.addToAura = function(idx, btn){
+  btn.classList.add('added');
+  btn.textContent = '✓ Added';
+  var q = getQueue();
+  var as = document.getElementById('auraStat');
+  if(as) as.textContent = parseInt(as.textContent||0)+1;
+  showToast('✨ '+q[idx].t+' added to your Aura!');
+};
+
+/* Viewer count pulse */
+setInterval(function(){
+  var vc = document.getElementById('viewerCount');
+  var vs = document.getElementById('viewStat');
+  var count = 1100 + Math.floor(Math.random()*80);
+  if(vc) vc.textContent = count.toLocaleString()+' watching';
+  if(vs) vs.textContent = (count/1000).toFixed(1)+'K';
+}, 3500);
 
 }); /* END DOMContentLoaded */
