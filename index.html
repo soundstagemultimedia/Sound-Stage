@@ -9,474 +9,428 @@
 </head>
 <body>
 
-<!-- ═══ SPLASH ═══ -->
-<div class="splash" id="splash">
-  <div class="bg-glow"></div>
-  <div class="scanlines"></div>
-  <div class="corner tl"></div>
-  <div class="corner tr"></div>
-  <div class="corner bl"></div>
-  <div class="corner br"></div>
-  <div id="particles"></div>
-  <div class="logo-enter">
-    <svg width="100%" viewBox="0 0 580 230" style="max-width:560px;" overflow="visible">
-      <defs>
-        <radialGradient id="sg" cx="27%" cy="52%" r="36%">
-          <stop offset="0%" stop-color="#F5A623" stop-opacity="0.08"/>
-          <stop offset="100%" stop-color="#F5A623" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <ellipse cx="110" cy="118" rx="98" ry="98" fill="url(#sg)"/>
-      <path class="r1" d="M 6 118 Q 6 20 110 20 Q 214 20 214 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
-      <path class="r2" d="M 22 118 Q 22 36 110 36 Q 198 36 198 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
-      <path class="r3" d="M 40 118 Q 40 54 110 54 Q 180 54 180 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
-      <path class="r4" d="M 60 118 Q 60 74 110 74 Q 160 74 160 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
-      <circle class="ex1" cx="110" cy="118" r="10" fill="none" stroke="#F5A623"/>
-      <circle class="ex2" cx="110" cy="118" r="10" fill="none" stroke="#F5A623"/>
-      <text x="110" y="124" text-anchor="middle" dominant-baseline="central"
-        font-family="'Orbitron',sans-serif" font-size="128" font-weight="900"
-        fill="none" stroke="#C4C4C4" stroke-width="1.5" class="sc">S</text>
-      <line class="ab" x1="56" y1="192" x2="164" y2="44" stroke="#F5A623" stroke-linecap="round"/>
-      <line x1="46" y1="198" x2="152" y2="52" stroke="#C07800" stroke-width="2.5" stroke-linecap="round" opacity="0.32"/>
-      <circle class="td" cx="164" cy="44" r="5" fill="#00E5FF"/>
-      <circle class="ad" cx="56" cy="192" r="5" fill="#F5A623"/>
-      <line x1="230" y1="26" x2="230" y2="210" stroke="#161616" stroke-width="1"/>
-      <line x1="242" y1="206" x2="412" y2="206" stroke="#F5A623" stroke-width="0.8" opacity="0.12"/>
-      <rect class="e1" x="242" y="168" width="14" rx="4" fill="#F5A623" opacity="0.28"/>
-      <rect class="e2" x="260" y="156" width="14" rx="4" fill="#F5A623" opacity="0.42"/>
-      <rect class="e3" x="278" y="144" width="14" rx="4" fill="#F5A623" opacity="0.60"/>
-      <rect class="e4" x="296" y="162" width="14" rx="4" fill="#00E5FF" opacity="0.92"/>
-      <rect class="e5" x="314" y="136" width="14" rx="4" fill="#F5A623" opacity="0.84"/>
-      <rect class="e6" x="332" y="166" width="14" rx="4" fill="#F5A623" opacity="0.62"/>
-      <rect class="e7" x="350" y="152" width="14" rx="4" fill="#F5A623" opacity="0.46"/>
-      <rect class="e8" x="368" y="176" width="14" rx="4" fill="#F5A623" opacity="0.32"/>
-      <rect class="e9" x="386" y="158" width="14" rx="4" fill="#F5A623" opacity="0.26"/>
-      <line x1="418" y1="26" x2="418" y2="210" stroke="#161616" stroke-width="1"/>
-      <text class="ww" x="498" y="100" text-anchor="middle" dominant-baseline="central"
-        font-family="'Rajdhani',sans-serif" font-size="68" font-weight="700"
-        letter-spacing="8" fill="#e8e8e8">SOUND</text>
-      <text class="wa" x="498" y="168" text-anchor="middle" dominant-baseline="central"
-        font-family="'Rajdhani',sans-serif" font-size="68" font-weight="700"
-        letter-spacing="8" fill="#F5A623">STAGE</text>
-      <line class="sw" x1="234" y1="198" x2="570" y2="198" stroke="#F5A623" stroke-width="1.5" stroke-linecap="round"/>
-      <text class="bk" x="498" y="220" text-anchor="middle" dominant-baseline="central"
-        font-family="'Rajdhani',sans-serif" font-size="13" letter-spacing="6" fill="#F5A623">BY KHEMRA</text>
-    </svg>
-    <div class="tagline">Where the audience controls the culture</div>
-    <div class="byline">Interstellarr Muzik</div>
-  </div>
-  <div class="load-area" id="loadArea">
-    <div class="bar-bg"><div class="bar-fill"></div></div>
-    <div class="load-txt" id="loadTxt">Initializing SoundStage</div>
-  </div>
- <div class="enter-wrap" id="enterWrap" style="opacity:1;position:relative;margin-top:24px;">
-    <button class="enter-btn" onclick="showPage('login')"><span>Enter SoundStage</span></button>
-  </div>
-</div>
-
-<!-- ═══ APP SHELL ═══ -->
-<div class="app" id="app">
-
-  <!-- TOP NAV -->
-  <div class="topnav">
-    <svg width="160" height="32" viewBox="0 0 400 76" overflow="visible" style="cursor:pointer;" onclick="showPage('stage')">
-      <path class="r2" d="M 2 38 Q 2 6 30 6 Q 58 6 58 38" fill="none" stroke="#F5A623" stroke-linecap="round"/>
-      <path class="r3" d="M 8 38 Q 8 12 30 12 Q 52 12 52 38" fill="none" stroke="#F5A623" stroke-linecap="round"/>
-      <path class="r4" d="M 14 38 Q 14 18 30 18 Q 46 18 46 38" fill="none" stroke="#F5A623" stroke-linecap="round"/>
-      <circle class="ex1" cx="30" cy="38" r="4" fill="none" stroke="#F5A623"/>
-      <text x="30" y="41" text-anchor="middle" dominant-baseline="central"
-        font-family="'Orbitron',sans-serif" font-size="40" font-weight="900"
-        fill="none" stroke="#C8C8C8" stroke-width="1.2" class="sc">S</text>
-      <line class="ab" x1="14" y1="60" x2="46" y2="14" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/>
-      <circle class="td" cx="46" cy="14" r="2.5" fill="#00E5FF"/>
-      <circle class="ad" cx="14" cy="60" r="2.5" fill="#F5A623"/>
-      <line x1="66" y1="8" x2="66" y2="68" stroke="#1a1a1a" stroke-width="0.8"/>
-      <rect class="e1" x="74" y="50" width="6" rx="1.5" fill="#F5A623" opacity="0.3"/>
-      <rect class="e3" x="83" y="44" width="6" rx="1.5" fill="#F5A623" opacity="0.6"/>
-      <rect class="e4" x="92" y="52" width="6" rx="1.5" fill="#00E5FF" opacity="0.9"/>
-      <rect class="e5" x="101" y="40" width="6" rx="1.5" fill="#F5A623" opacity="0.8"/>
-      <rect class="e7" x="110" y="48" width="6" rx="1.5" fill="#F5A623" opacity="0.4"/>
-      <line x1="122" y1="8" x2="122" y2="68" stroke="#1a1a1a" stroke-width="0.8"/>
-      <text class="ww" x="185" y="28" text-anchor="middle" dominant-baseline="central"
-        font-family="'Rajdhani',sans-serif" font-size="22" font-weight="700"
-        letter-spacing="5" fill="#e8e8e8">SOUND</text>
-      <text class="wa" x="185" y="50" text-anchor="middle" dominant-baseline="central"
-        font-family="'Rajdhani',sans-serif" font-size="22" font-weight="700"
-        letter-spacing="5" fill="#F5A623">STAGE</text>
-    </svg>
-    <div class="nav-links">
-      <button class="nav-btn active" id="nav-stage" onclick="showPage('stage')">🎵 Live Stage</button>
-      <button class="nav-btn" id="nav-aura" onclick="showPage('aura')">✨ Aura</button>
-    <button class="nav-btn" id="nav-moyo" onclick="window.location.href='moyo.html'">👗 Moyo</button>
-      <button class="nav-btn" id="nav-artist" onclick="showPage('artist')">🎤 Artist Portal</button>
-      <button class="nav-btn" onclick="window.location.href='spotlight.html'">⭐ Spotlight</button>
+  <!-- SPLASH SCREEN -->
+  <div class="splash" id="splash">
+    <div class="bg-glow"></div>
+    <div class="scanlines"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <div id="particles"></div>
+    <div class="logo-enter">
+      <svg width="100%" viewBox="0 0 580 230" style="max-width:560px;" overflow="visible">
+        <defs>
+          <radialGradient id="sg" cx="27%" cy="52%" r="36%">
+            <stop offset="0%" stop-color="#F5A623" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="#F5A623" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="110" cy="118" rx="98" ry="98" fill="url(#sg)"/>
+        <path class="r1" d="M 6 118 Q 6 20 110 20 Q 214 20 214 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r2" d="M 22 118 Q 22 36 110 36 Q 198 36 198 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r3" d="M 40 118 Q 40 54 110 54 Q 180 54 180 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r4" d="M 60 118 Q 60 74 110 74 Q 160 74 160 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <circle class="ex1" cx="110" cy="118" r="10" fill="none" stroke="#F5A623"/>
+        <circle class="ex2" cx="110" cy="118" r="10" fill="none" stroke="#F5A623"/>
+        <text x="110" y="124" text-anchor="middle" dominant-baseline="central"
+          font-family="'Orbitron',sans-serif" font-size="128" font-weight="900"
+          fill="none" stroke="#C4C4C4" stroke-width="1.5" class="sc">S</text>
+        <line class="ab" x1="56" y1="192" x2="164" y2="44" stroke="#F5A623" stroke-linecap="round"/>
+        <line x1="46" y1="198" x2="152" y2="52" stroke="#C07800" stroke-width="2.5" stroke-linecap="round" opacity="0.32"/>
+        <circle class="td" cx="164" cy="44" r="5" fill="#00E5FF"/>
+        <circle class="ad" cx="56" cy="192" r="5" fill="#F5A623"/>
+        <line x1="230" y1="26" x2="230" y2="210" stroke="#161616" stroke-width="1"/>
+        <line x1="242" y1="206" x2="412" y2="206" stroke="#F5A623" stroke-width="0.8" opacity="0.12"/>
+        <rect class="e1" x="242" y="168" width="14" rx="4" fill="#F5A623" opacity="0.28"/>
+        <rect class="e2" x="260" y="156" width="14" rx="4" fill="#F5A623" opacity="0.42"/>
+        <rect class="e3" x="278" y="144" width="14" rx="4" fill="#F5A623" opacity="0.60"/>
+        <rect class="e4" x="296" y="162" width="14" rx="4" fill="#00E5FF" opacity="0.92"/>
+        <rect class="e5" x="314" y="136" width="14" rx="4" fill="#F5A623" opacity="0.84"/>
+        <rect class="e6" x="332" y="166" width="14" rx="4" fill="#F5A623" opacity="0.62"/>
+        <rect class="e7" x="350" y="152" width="14" rx="4" fill="#F5A623" opacity="0.46"/>
+        <rect class="e8" x="368" y="176" width="14" rx="4" fill="#F5A623" opacity="0.32"/>
+        <rect class="e9" x="386" y="158" width="14" rx="4" fill="#F5A623" opacity="0.26"/>
+        <line x1="418" y1="26" x2="418" y2="210" stroke="#161616" stroke-width="1"/>
+        <text class="ww" x="498" y="100" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="68" font-weight="700"
+          letter-spacing="8" fill="#e8e8e8">SOUND</text>
+        <text class="wa" x="498" y="168" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="68" font-weight="700"
+          letter-spacing="8" fill="#F5A623">STAGE</text>
+        <line class="sw" x1="234" y1="198" x2="570" y2="198" stroke="#F5A623" stroke-width="1.5" stroke-linecap="round"/>
+        <text class="bk" x="498" y="220" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="13" letter-spacing="6" fill="#F5A623">BY KHEMRA</text>
+      </svg>
+      <div class="tagline">Where the audience controls the culture</div>
+      <div class="byline">Interstellarr Muzik</div>
     </div>
-    <div class="nav-right">
-      <div class="amp-chip">⚡ <span id="ampVal">18</span> Amps</div>
-      <div class="user-pill" id="userPill" onclick="showPage('profile')">
-        <div class="uav" id="userAv">?</div>
-        <span class="unm" id="userName">Sign In</span>
+    <div class="load-area" id="loadArea">
+      <div class="bar-bg"><div class="bar-fill"></div></div>
+      <div class="load-txt" id="loadTxt">Initializing SoundStage</div>
+    </div>
+    <div class="enter-wrap" id="enterWrap" style="opacity:1;position:relative;margin-top:24px;">
+      <button class="enter-btn" onclick="enterPlatform()"><span>Enter SoundStage</span></button>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div class="app" id="app">
+
+    <!-- TOP NAV WITH ANIMATED LOGO -->
+    <div class="topnav">
+      <svg width="200" height="38" viewBox="0 0 400 76" overflow="visible" style="cursor:pointer;" onclick="showPage('stage')">
+        <path class="r2" d="M 2 38 Q 2 6 30 6 Q 58 6 58 38" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r3" d="M 8 38 Q 8 12 30 12 Q 52 12 52 38" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r4" d="M 14 38 Q 14 18 30 18 Q 46 18 46 38" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <circle class="ex1" cx="30" cy="38" r="4" fill="none" stroke="#F5A623"/>
+        <text x="30" y="41" text-anchor="middle" dominant-baseline="central"
+          font-family="'Orbitron',sans-serif" font-size="40" font-weight="900"
+          fill="none" stroke="#C8C8C8" stroke-width="1.2" class="sc">S</text>
+        <line class="ab" x1="14" y1="60" x2="46" y2="14" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/>
+        <circle class="td" cx="46" cy="14" r="2.5" fill="#00E5FF"/>
+        <circle class="ad" cx="14" cy="60" r="2.5" fill="#F5A623"/>
+        <line x1="66" y1="8" x2="66" y2="68" stroke="#1a1a1a" stroke-width="0.8"/>
+        <rect class="e1" x="74" y="50" width="6" rx="1.5" fill="#F5A623" opacity="0.3"/>
+        <rect class="e3" x="83" y="44" width="6" rx="1.5" fill="#F5A623" opacity="0.6"/>
+        <rect class="e4" x="92" y="52" width="6" rx="1.5" fill="#00E5FF" opacity="0.9"/>
+        <rect class="e5" x="101" y="40" width="6" rx="1.5" fill="#F5A623" opacity="0.8"/>
+        <rect class="e7" x="110" y="48" width="6" rx="1.5" fill="#F5A623" opacity="0.4"/>
+        <line x1="122" y1="8" x2="122" y2="68" stroke="#1a1a1a" stroke-width="0.8"/>
+        <text class="ww" x="185" y="28" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="22" font-weight="700"
+          letter-spacing="5" fill="#e8e8e8">SOUND</text>
+        <text class="wa" x="185" y="50" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="22" font-weight="700"
+          letter-spacing="5" fill="#F5A623">STAGE</text>
+        <line class="sw" x1="124" y1="64" x2="250" y2="64" stroke="#F5A623" stroke-width="0.8"/>
+        <text class="bk" x="185" y="70" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="7" letter-spacing="3" fill="#F5A623">BY KHEMRA</text>
+      </svg>
+      <div class="nav-links">
+        <button class="nav-btn active" id="nav-stage" onclick="showPage('stage')">🎵 Live Stage</button>
+        <button class="nav-btn" id="nav-aura" onclick="showPage('aura')">✨ Aura</button>
+        <button class="nav-btn" onclick="window.location.href='moyo.html'">👗 Moyo</button>
+        <button class="nav-btn" onclick="showPage('artist')">🎤 Artist Portal</button>
+        <button class="nav-btn" onclick="window.location.href='spotlight.html'">⭐ Spotlight</button>
       </div>
-    </div>
-  </div>
-
-  <!-- ═══ LOGIN PAGE ═══ -->
-  <div class="page" id="page-login">
-    <div class="login-wrap">
-      <div class="login-card">
-        <div class="login-logo">
-          <div class="ll-title">SOUNDSTAGE</div>
-          <div class="ll-sub">By Khemra</div>
-        </div>
-        <div class="login-tabs">
-          <button class="ltab active" id="ltab-in" onclick="switchLoginTab('in')">Sign In</button>
-          <button class="ltab" id="ltab-up" onclick="switchLoginTab('up')">Sign Up</button>
-        </div>
-
-        <!-- SIGN IN -->
-        <div id="login-in">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="loginEmail" placeholder="your@email.com" class="form-input"/>
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="loginPass" placeholder="••••••••" class="form-input"/>
-          </div>
-          <button class="form-btn" onclick="handleLogin()">Sign In to SoundStage</button>
-          <div class="form-divider">or</div>
-          <button class="google-btn" onclick="handleGoogleAuth()">
-            <span>G</span> Continue with Google
-          </button>
-        </div>
-
-        <!-- SIGN UP -->
-        <div id="login-up" style="display:none;">
-          <div class="form-group">
-            <label>Display Name</label>
-            <input type="text" id="signupName" placeholder="Your name or artist name" class="form-input"/>
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="signupEmail" placeholder="your@email.com" class="form-input"/>
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="signupPass" placeholder="Create a password" class="form-input"/>
-          </div>
-          <div class="form-group">
-            <label>I am a...</label>
-            <select id="signupRole" class="form-input">
-              <option value="fan">Music Fan</option>
-              <option value="artist">Artist / Musician</option>
-              <option value="designer">Fashion Designer</option>
-              <option value="both">Artist + Fashion</option>
-            </select>
-          </div>
-          <button class="form-btn" onclick="handleSignup()">Create My Account</button>
-          <div class="form-divider">or</div>
-          <button class="google-btn" onclick="handleGoogleAuth()">
-            <span>G</span> Continue with Google
-          </button>
-        </div>
-
-        <div class="login-footer">
-          By continuing you agree to SoundStage Terms of Service
+      <div class="nav-right">
+        <div class="amp-chip">⚡ <span id="ampVal">18</span> Amps</div>
+        <div class="user-pill" id="userPill" onclick="showPage('profile')">
+          <div class="uav" id="userAv">?</div>
+          <span class="unm" id="userName">Sign In</span>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ═══ LIVE STAGE PAGE ═══ -->
-  <div class="page" id="page-stage" style="display:none;">
-    <div class="ch-strip">
-      <button class="ch-btn active" onclick="switchCh('hiphop',this)"><div class="ch-dot" style="background:#F5A623;"></div>Hip Hop<span class="live-tag">LIVE</span></button>
-      <button class="ch-btn" onclick="switchCh('rock',this)"><div class="ch-dot" style="background:#FF3B3B;"></div>Rock</button>
-      <button class="ch-btn" onclick="switchCh('latin',this)"><div class="ch-dot" style="background:#00E5FF;"></div>Latin</button>
-      <button class="ch-btn" onclick="switchCh('rnb',this)"><div class="ch-dot" style="background:#CC44FF;"></div>R&B</button>
-      <button class="ch-btn" onclick="switchCh('metal',this)"><div class="ch-dot" style="background:#FF6B00;"></div>Metal</button>
-      <button class="ch-btn" onclick="switchCh('emo',this)"><div class="ch-dot" style="background:#00FF88;"></div>Emo</button>
-     <button class="spot-btn" onclick="window.location.href='spotlight.html'">★ Indie Spotlight</button>
-    </div>
-    <div class="stage-layout">
-      <div class="center-col">
-        <div class="player-wrap" id="playerWrap">
-          <div class="player-bg" id="playerBg">
-            <div class="now-playing-label">Now Playing</div>
-            <div class="np-title" id="npTitle">Sundress</div>
-            <div class="np-artist" id="npArtist">ASAP Rocky</div>
-            <button class="play-btn" onclick="loadVideo()">▶</button>
+    <!-- LOGIN PAGE -->
+    <div class="page" id="page-login">
+      <div class="login-wrap">
+        <div class="login-card">
+          <div class="login-logo">
+            <div class="ll-title">SOUNDSTAGE</div>
+            <div class="ll-sub">By Khemra</div>
           </div>
-          <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none;" allowfullscreen
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-          <svg class="svg-ov" id="svgOv" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <rect class="region" id="r-jacket" x="28" y="22" width="22" height="28" rx="2"
-              onmouseenter="hoverR(this,'jacket')" onmouseleave="leaveR()" onclick="selectR('jacket')"/>
-            <rect class="region" id="r-shoes" x="30" y="70" width="18" height="14" rx="2"
-              onmouseenter="hoverR(this,'shoes')" onmouseleave="leaveR()" onclick="selectR('shoes')"/>
-            <rect class="region" id="r-pants" x="29" y="50" width="20" height="22" rx="2"
-              onmouseenter="hoverR(this,'pants')" onmouseleave="leaveR()" onclick="selectR('pants')"/>
-            <ellipse class="region" id="r-chain" cx="39" cy="34" rx="6" ry="3"
-              onmouseenter="hoverR(this,'chain')" onmouseleave="leaveR()" onclick="selectR('chain')"/>
-          </svg>
-          <div class="region-label" id="regionLabel"></div>
-          <div class="fashion-card" id="fashionCard">
-            <div class="fc-head"><div class="fc-name" id="fcName"></div><button class="fc-close" onclick="closeCard()">✕</button></div>
-            <div class="fc-tag" id="fcTag"></div>
-            <div class="fc-prices" id="fcPrices"></div>
-            <div class="fc-btns"><button class="fc-buy" id="fcBuy">Buy Now</button><button class="fc-save" id="fcSave">Save to Moyo</button></div>
+          <div class="login-tabs">
+            <button class="ltab active" id="ltab-in" onclick="switchLoginTab('in')">Sign In</button>
+            <button class="ltab" id="ltab-up" onclick="switchLoginTab('up')">Sign Up</button>
           </div>
-          <button class="ov-btn" id="ovBtn" onclick="toggleOverlay()">✦ Fashion Scan</button>
-          <div class="scan-hint" id="scanHint">Hover over clothing to identify</div>
-          <div class="ch-bar" id="chBar"></div>
-        </div>
-        <div class="now-bar">
-          <div class="now-thumb" id="nowThumb">🎵</div>
-          <div class="now-info">
-            <div class="now-title" id="nowTitle">Sundress — ASAP Rocky</div>
-            <div class="now-sub" id="nowSub">Hip Hop Channel</div>
+          <div id="login-in">
+            <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com" class="form-input"/></div>
+            <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••" class="form-input"/></div>
+            <button class="form-btn" onclick="handleLogin()">Sign In to SoundStage</button>
+            <div class="form-divider">or</div>
+            <button class="google-btn" onclick="handleGoogleAuth()"><span>G</span> Continue with Google</button>
           </div>
-          <div class="controls">
-            <button class="ctrl" onclick="prevVid()">⏮</button>
-            <button class="ctrl-main" onclick="loadVideo()">▶</button>
-            <button class="ctrl" onclick="nextVid()">⏭</button>
-          </div>
-        </div>
-        <div class="brand-drop">
-          <div class="live-dot"></div>
-          <div class="drop-txt" id="dropTxt"><strong>NIKE DROP:</strong> Air Max feat. in this video — PRO members 20% off</div>
-          <button class="drop-btn" onclick="showToast('Opening Nike drop!')">Shop Drop</button>
-        </div>
-        <div class="queue-wrap">
-          <div class="q-head">Fan Queue — Amp to Push Up <span class="q-sub">5 plays/song max</span></div>
-          <div id="queueList"></div>
-        </div>
-        <div class="stats-row">
-          <div class="stat"><div class="stat-n" id="scanStat">0</div><div class="stat-l">Scanned</div></div>
-          <div class="stat"><div class="stat-n">1.1K</div><div class="stat-l">Watching</div></div>
-          <div class="stat"><div class="stat-n">3.2K</div><div class="stat-l">Amps Today</div></div>
-        </div>
-      </div>
-      <div class="right-panel">
-        <div class="panel-lbl">Amp Wallet</div>
-        <div class="wallet">
-          <div class="wt-top"><div><div class="wt-lbl">Your Amps</div><div class="wt-sub">Spend to push songs</div></div><div class="wt-cnt" id="wCnt">18</div></div>
-          <div class="amp-pips" id="ampPips"></div>
-          <div class="tier-row">
-            <div class="tc active-tc"><div class="tc-n">PRO</div><div class="tc-v">20 ⚡</div><div class="tc-l">per day</div></div>
-            <div class="tc"><div class="tc-n" style="color:#444;">FREE</div><div class="tc-v" style="color:#444;">5 ⚡</div><div class="tc-l">per day</div></div>
-          </div>
-        </div>
-        <div class="panel-lbl">Live Spotlight</div>
-        <div class="spot-scroll">
-          <div class="spot-card">
-            <div class="spot-head"><div class="spot-icon">🎤</div><div><div class="spot-name">Solé Wave</div><div class="spot-type">Indie R&B / Soul</div></div></div>
-            <div class="spot-timer"><div class="live-dot"></div>LIVE — <strong id="spotTime">2:41</strong> left</div>
-            <div class="spot-votes">
-              <button class="sv-btn" onclick="spotVote('fire')">🔥 Fire</button>
-              <button class="sv-btn" onclick="spotVote('love')">💜 Love</button>
-              <button class="sv-btn" onclick="spotVote('amp')">⚡ Amp</button>
+          <div id="login-up" style="display:none;">
+            <div class="form-group"><label>Display Name</label><input type="text" id="signupName" placeholder="Your name or artist name" class="form-input"/></div>
+            <div class="form-group"><label>Email</label><input type="email" id="signupEmail" placeholder="your@email.com" class="form-input"/></div>
+            <div class="form-group"><label>Password</label><input type="password" id="signupPass" placeholder="Create a password" class="form-input"/></div>
+            <div class="form-group">
+              <label>I am a...</label>
+              <select id="signupRole" class="form-input">
+                <option value="fan">Music Fan</option>
+                <option value="artist">Artist / Musician</option>
+                <option value="designer">Fashion Designer</option>
+                <option value="both">Artist + Fashion</option>
+              </select>
             </div>
-            <div class="fb-bars">
-              <div class="fb-row"><div class="fb-l">Fire</div><div class="fb-track"><div class="fb-fill" id="fb1" style="width:62%;background:#FF3B3B;"></div></div><div class="fb-pct" id="fp1">62%</div></div>
-              <div class="fb-row"><div class="fb-l">Love</div><div class="fb-track"><div class="fb-fill" id="fb2" style="width:28%;background:#CC44FF;"></div></div><div class="fb-pct" id="fp2">28%</div></div>
-              <div class="fb-row"><div class="fb-l">Amp</div><div class="fb-track"><div class="fb-fill" id="fb3" style="width:10%;background:#F5A623;"></div></div><div class="fb-pct" id="fp3">10%</div></div>
+            <button class="form-btn" onclick="handleSignup()">Create My Account</button>
+            <div class="form-divider">or</div>
+            <button class="google-btn" onclick="handleGoogleAuth()"><span>G</span> Continue with Google</button>
+          </div>
+          <div class="login-footer">By continuing you agree to SoundStage Terms of Service</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE STAGE PAGE -->
+    <div class="page" id="page-stage" style="display:none;">
+      <div class="ch-strip">
+        <button class="ch-btn active" onclick="switchCh('hiphop',this)"><div class="ch-dot" style="background:#F5A623;"></div>Hip Hop<span class="live-tag">LIVE</span></button>
+        <button class="ch-btn" onclick="switchCh('rock',this)"><div class="ch-dot" style="background:#FF3B3B;"></div>Rock</button>
+        <button class="ch-btn" onclick="switchCh('latin',this)"><div class="ch-dot" style="background:#00E5FF;"></div>Latin</button>
+        <button class="ch-btn" onclick="switchCh('rnb',this)"><div class="ch-dot" style="background:#CC44FF;"></div>R&B</button>
+        <button class="ch-btn" onclick="switchCh('metal',this)"><div class="ch-dot" style="background:#FF6B00;"></div>Metal</button>
+        <button class="ch-btn" onclick="switchCh('emo',this)"><div class="ch-dot" style="background:#00FF88;"></div>Emo</button>
+        <button class="spot-btn" onclick="window.location.href='spotlight.html'">⭐ Satori Blu LIVE</button>
+      </div>
+
+      <div class="stage-layout">
+        <div class="center-col">
+
+          <!-- VIDEO -->
+          <div class="player-wrap" id="playerWrap">
+            <div class="player-bg" id="playerBg">
+              <div class="now-playing-label">Now Playing</div>
+              <div class="np-title" id="npTitle">Sundress</div>
+              <div class="np-artist" id="npArtist">ASAP Rocky</div>
+              <button class="play-btn" onclick="loadVideo()">▶</button>
+            </div>
+            <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none;" allowfullscreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+            <svg class="svg-ov" id="svgOv" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <rect class="region" id="r-jacket" x="28" y="22" width="22" height="28" rx="2" onmouseenter="hoverR(this,'jacket')" onmouseleave="leaveR()" onclick="selectR('jacket')"/>
+              <rect class="region" id="r-shoes" x="30" y="70" width="18" height="14" rx="2" onmouseenter="hoverR(this,'shoes')" onmouseleave="leaveR()" onclick="selectR('shoes')"/>
+              <rect class="region" id="r-pants" x="29" y="50" width="20" height="22" rx="2" onmouseenter="hoverR(this,'pants')" onmouseleave="leaveR()" onclick="selectR('pants')"/>
+              <ellipse class="region" id="r-chain" cx="39" cy="34" rx="6" ry="3" onmouseenter="hoverR(this,'chain')" onmouseleave="leaveR()" onclick="selectR('chain')"/>
+            </svg>
+            <div class="region-label" id="regionLabel"></div>
+            <div class="fashion-card" id="fashionCard">
+              <div class="fc-head"><div class="fc-name" id="fcName"></div><button class="fc-close" onclick="closeCard()">✕</button></div>
+              <div class="fc-tag" id="fcTag"></div>
+              <div class="fc-prices" id="fcPrices"></div>
+              <div class="fc-btns"><button class="fc-buy" id="fcBuy">Buy Now</button><button class="fc-save" id="fcSave">Save to Moyo</button></div>
+            </div>
+            <!-- Viewer count overlay -->
+            <div class="viewer-overlay">
+              <div class="vo-dot"></div>
+              <span id="viewerCount">1,124 watching</span>
+            </div>
+            <button class="ov-btn" id="ovBtn" onclick="toggleOverlay()">✦ Fashion Scan</button>
+            <div class="scan-hint" id="scanHint">Hover over clothing to identify</div>
+            <!-- Viewer pulse bar -->
+            <div class="viewer-bar"><div class="viewer-fill"></div></div>
+            <div class="ch-bar" id="chBar"></div>
+          </div>
+
+          <!-- NOW PLAYING -->
+          <div class="now-bar">
+            <div class="now-thumb" id="nowThumb">🎵</div>
+            <div class="now-info">
+              <div class="now-title" id="nowTitle">Sundress — ASAP Rocky</div>
+              <div class="now-sub" id="nowSub">Hip Hop / Rap Channel</div>
+            </div>
+            <div class="controls">
+              <button class="ctrl" onclick="prevVid()">⏮</button>
+              <button class="ctrl-main" id="ppBtn" onclick="loadVideo()">▶</button>
+              <button class="ctrl" onclick="nextVid()">⏭</button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ═══ AURA PAGE ═══ -->
-  <div class="page" id="page-aura" style="display:none;">
-    <div class="page-inner">
-      <div class="page-hero">
-        <div class="ph-title">✨ Your Auras</div>
-        <div class="ph-sub">Curate playlists. Publish to the world. Earn your DJ badge.</div>
-        <button class="ph-btn" onclick="createAura()">+ Create New Aura</button>
-      </div>
-      <div class="aura-grid" id="auraGrid"></div>
-      <div class="badge-section">
-        <div class="badge-title">DJ Badge Progress</div>
-        <div class="badge-tiers">
-          <div class="badge-tier earned">
-            <div class="bt-icon">📻</div>
-            <div class="bt-info"><div class="bt-name">Freq</div><div class="bt-req">3 Auras published</div></div>
-            <div class="bt-check">✓</div>
+          <!-- BRAND DROP -->
+          <div class="brand-drop">
+            <div class="live-dot"></div>
+            <div class="drop-txt" id="dropTxt"><strong>NIKE DROP:</strong> Air Max feat. in this video — PRO members 20% off</div>
+            <button class="drop-btn" onclick="showToast('Opening Nike drop!')">Shop Drop</button>
           </div>
-          <div class="badge-tier current">
-            <div class="bt-icon">🌊</div>
-            <div class="bt-info">
-              <div class="bt-name" style="color:#F5A623;">Wave</div>
-              <div class="bt-req">500 total votes needed</div>
-              <div class="bt-bar"><div class="bt-fill" id="waveFill" style="width:68%;"></div></div>
+
+          <!-- DROP HISTORY -->
+          <div class="drop-history">
+            <div class="dh-label">Recent Drops</div>
+            <div class="dh-item" onclick="showToast('Jordan 1 Retro — sold out!')">
+              <span style="font-size:11px;">👟</span>
+              <div><div class="dh-brand">JORDAN</div><div class="dh-item-name">Retro High OG</div></div>
+              <div class="dh-time">2m ago</div>
+              <div class="dh-sold">SOLD OUT</div>
             </div>
-            <div style="font-size:10px;color:#F5A623;">340/500</div>
+            <div class="dh-item" onclick="showToast('Bad Bunny Adidas — 6 left!')">
+              <span style="font-size:11px;">🌴</span>
+              <div><div class="dh-brand">ADIDAS × BAD BUNNY</div><div class="dh-item-name">Campus Slides</div></div>
+              <div class="dh-time">14m ago</div>
+              <div class="dh-sold">6 LEFT</div>
+            </div>
+            <div class="dh-item" onclick="showToast('Supreme Box Logo — sold out!')">
+              <span style="font-size:11px;">🔴</span>
+              <div><div class="dh-brand">SUPREME</div><div class="dh-item-name">Box Logo Hoodie</div></div>
+              <div class="dh-time">31m ago</div>
+              <div class="dh-sold">SOLD OUT</div>
+            </div>
+            <div class="dh-item" onclick="window.location.href='spotlight.html'">
+              <span style="font-size:11px;">🦋</span>
+              <div><div class="dh-brand">SATORI BLU</div><div class="dh-item-name">Butterfly Pendant</div></div>
+              <div class="dh-time">1h ago</div>
+              <div class="dh-shop">SHOP</div>
+            </div>
           </div>
-          <div class="badge-tier locked">
-            <div class="bt-icon">💓</div>
-            <div class="bt-info"><div class="bt-name" style="color:#333;">Pulse</div><div class="bt-req">2K votes + 10 Auras</div></div>
-            <div style="font-size:10px;color:#333;">locked</div>
+
+          <!-- QUEUE -->
+          <div class="queue-wrap">
+            <div class="q-head">Fan Queue — Amp to Push Up <span class="q-sub">5 plays/song max</span></div>
+            <div id="queueList"></div>
           </div>
-          <div class="badge-tier locked">
-            <div class="bt-icon">👑</div>
-            <div class="bt-info"><div class="bt-name" style="color:#333;">Icon</div><div class="bt-req">10K votes + legend status</div></div>
-            <div style="font-size:10px;color:#333;">locked</div>
+
+          <!-- STATS -->
+          <div class="stats-row">
+            <div class="stat"><div class="stat-n" id="scanStat">0</div><div class="stat-l">Scanned</div></div>
+            <div class="stat"><div class="stat-n" id="viewStat">1.1K</div><div class="stat-l">Watching</div></div>
+            <div class="stat"><div class="stat-n">3.2K</div><div class="stat-l">Amps Today</div></div>
+            <div class="stat"><div class="stat-n" id="auraStat">0</div><div class="stat-l">Aura Adds</div></div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ═══ MOYO PAGE ═══ -->
-  <div class="page" id="page-moyo" style="display:none;">
-    <div class="page-inner">
-      <div class="page-hero">
-        <div class="ph-title">👗 Your Moyo</div>
-        <div class="ph-sub">Your digital soul. Try on before you buy. Save pieces from every video.</div>
-        <button class="ph-btn" onclick="showToast('Photo upload coming in full build!')">+ Upload Your Photo</button>
-      </div>
-      <div class="moyo-layout">
-        <div class="moyo-avatar-section">
-          <div class="moyo-avatar-card">
-            <div class="moyo-figure">
-              <div class="m-head"></div>
-              <div class="m-top" id="mTop"></div>
-              <div class="m-pants">
-                <div class="m-leg" id="mLegL"></div>
-                <div class="m-leg" id="mLegR"></div>
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+          <div class="panel-lbl">Amp Wallet</div>
+          <div class="wallet">
+            <div class="wt-top"><div><div class="wt-lbl">Your Amps</div><div class="wt-sub">Spend to push songs up</div></div><div class="wt-cnt" id="wCnt">18</div></div>
+            <div class="amp-pips" id="ampPips"></div>
+            <div class="tier-row">
+              <div class="tc active-tc"><div class="tc-n">PRO</div><div class="tc-v">20 ⚡</div><div class="tc-l">per day</div></div>
+              <div class="tc"><div class="tc-n" style="color:#444;">FREE</div><div class="tc-v" style="color:#444;">5 ⚡</div><div class="tc-l">per day</div></div>
+            </div>
+          </div>
+
+          <!-- MINI MOYO -->
+          <div class="panel-lbl">Moyo — Saved Pieces</div>
+          <div class="mini-moyo">
+            <div class="mm-header">
+              <div class="mm-title" id="mmTitle">Nothing saved yet</div>
+              <a href="moyo.html" class="mm-link">Open Moyo →</a>
+            </div>
+            <div class="mm-items" id="mmItems">
+              <div class="mm-empty">Turn on Fashion Scan · hover clothing · save pieces</div>
+            </div>
+          </div>
+
+          <div class="panel-lbl">Live Indie Spotlight</div>
+          <div class="spot-scroll">
+            <div class="spot-card">
+              <div class="spot-head">
+                <div class="spot-icon">🦋</div>
+                <div><div class="spot-name">Satori Blu</div><div class="spot-type">R&B / Soul / Indie</div></div>
               </div>
-              <div class="m-shoes">
-                <div class="m-shoe" id="mShoeL"></div>
-                <div class="m-shoe" id="mShoeR"></div>
+              <div class="spot-timer"><div class="live-dot"></div>LIVE — <strong id="spotTime">2:41</strong> left</div>
+              <div class="spot-votes">
+                <button class="sv-btn" onclick="spotVote('fire')">🔥 Fire</button>
+                <button class="sv-btn" onclick="spotVote('love')">💜 Love</button>
+                <button class="sv-btn" onclick="spotVote('amp')">⚡ Amp</button>
+              </div>
+              <div class="fb-bars">
+                <div class="fb-row"><div class="fb-l">Fire</div><div class="fb-track"><div class="fb-fill" id="fb1" style="width:62%;background:#FF3B3B;"></div></div><div class="fb-pct" id="fp1">62%</div></div>
+                <div class="fb-row"><div class="fb-l">Love</div><div class="fb-track"><div class="fb-fill" id="fb2" style="width:28%;background:#CC44FF;"></div></div><div class="fb-pct" id="fp2">28%</div></div>
+                <div class="fb-row"><div class="fb-l">Amp</div><div class="fb-track"><div class="fb-fill" id="fb3" style="width:10%;background:#F5A623;"></div></div><div class="fb-pct" id="fp3">10%</div></div>
+              </div>
+              <div style="margin-top:8px;">
+                <a href="spotlight.html" style="display:block;width:100%;padding:6px;border-radius:7px;background:var(--teal);color:#000;border:none;font-size:10px;font-weight:700;cursor:pointer;font-family:var(--rb);letter-spacing:1px;text-align:center;text-decoration:none;">Watch Full Spotlight →</a>
               </div>
             </div>
-            <div class="moyo-label">MOYO</div>
-            <div class="moyo-user-name" id="moyoUserName">Your Moyo</div>
-          </div>
-          <div class="moyo-steps">
-            <div class="moyo-step"><div class="ms-num">01</div><div class="ms-txt">Upload your photo — we build your digital soul</div></div>
-            <div class="moyo-step"><div class="ms-num">02</div><div class="ms-txt">Click clothing in any video to identify it</div></div>
-            <div class="moyo-step"><div class="ms-num">03</div><div class="ms-txt">Try it on your Moyo before you buy</div></div>
-          </div>
-        </div>
-        <div class="moyo-closet">
-          <div class="closet-toolbar">
-            <div class="closet-title">My Closet <span id="itemCount" style="color:#555;font-size:11px;">(0 pieces)</span></div>
-            <div class="view-toggle">
-              <button class="view-btn active" id="vbRack" onclick="setView('rack',this)">Rack</button>
-              <button class="view-btn" id="vbGrid" onclick="setView('grid',this)">Grid</button>
+            <div class="spot-card" style="border-color:rgba(0,229,255,0.15);">
+              <div class="spot-head">
+                <div class="spot-icon" style="background:var(--teal-g);border-color:rgba(0,229,255,0.2);">👗</div>
+                <div><div class="spot-name" style="color:var(--teal);">NXUS Studio</div><div class="spot-type" style="color:var(--teal);">Fashion — Streetwear</div></div>
+              </div>
+              <div class="spot-timer" style="color:var(--teal);">Up Next — 4:12</div>
+              <button style="width:100%;padding:5px;border-radius:6px;border:1px solid rgba(0,229,255,0.2);background:transparent;color:var(--teal);font-size:9px;cursor:pointer;font-family:var(--rb);letter-spacing:1px;" onclick="showToast('Reminder set for NXUS Studio!')">Set Reminder</button>
             </div>
           </div>
-          <div class="filter-row">
-            <span class="filter-pill active" onclick="filterCloset('all',this)">All</span>
-            <span class="filter-pill" onclick="filterCloset('tops',this)">Tops</span>
-            <span class="filter-pill" onclick="filterCloset('bottoms',this)">Bottoms</span>
-            <span class="filter-pill" onclick="filterCloset('shoes',this)">Shoes</span>
-            <span class="filter-pill" onclick="filterCloset('accessories',this)">Accessories</span>
-          </div>
-          <div id="rackView" class="rack-view"></div>
-          <div id="gridView" class="grid-view" style="display:none;"></div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ═══ ARTIST PORTAL ═══ -->
-  <div class="page" id="page-artist" style="display:none;">
-    <div class="page-inner">
-      <div class="page-hero">
-        <div class="ph-title">🎤 Artist & Designer Portal</div>
-        <div class="ph-sub">Your 3 minutes. The world votes. Real fans. Real feedback. Real sales.</div>
-      </div>
-      <div class="portal-grid">
-        <div class="portal-card">
-          <div class="pc-icon">🎵</div>
-          <div class="pc-title">Artist Spotlight Slot</div>
-          <div class="pc-price">$49</div>
-          <div class="pc-desc">3-minute video showcase on your genre channel. Live world votes. Real-time feedback. Fan follows and sales links included.</div>
-          <div class="pc-features">
-            <div class="pc-feat">✓ Live on your genre channel</div>
-            <div class="pc-feat">✓ Real-time vote counter</div>
-            <div class="pc-feat">✓ Fan follow button live</div>
-            <div class="pc-feat">✓ Sales link integration</div>
-            <div class="pc-feat">✓ Feedback report after</div>
+    <!-- AURA PAGE -->
+    <div class="page" id="page-aura" style="display:none;">
+      <div class="page-inner">
+        <div class="page-hero">
+          <div class="ph-title">✨ Your Auras</div>
+          <div class="ph-sub">Curate playlists. Publish to the world. Earn your DJ badge.</div>
+          <button class="ph-btn" onclick="createAura()">+ Create New Aura</button>
+        </div>
+        <div class="aura-grid" id="auraGrid"></div>
+        <div class="badge-section">
+          <div class="badge-title">DJ Badge Progress</div>
+          <div class="badge-tiers">
+            <div class="badge-tier earned"><div class="bt-icon">📻</div><div class="bt-info"><div class="bt-name">Freq</div><div class="bt-req">3 Auras published</div></div><div class="bt-check">✓</div></div>
+            <div class="badge-tier current"><div class="bt-icon">🌊</div><div class="bt-info"><div class="bt-name" style="color:#F5A623;">Wave</div><div class="bt-req">500 total votes needed</div><div class="bt-bar"><div class="bt-fill" style="width:68%;"></div></div></div><div style="font-size:10px;color:#F5A623;">340/500</div></div>
+            <div class="badge-tier locked"><div class="bt-icon">💓</div><div class="bt-info"><div class="bt-name" style="color:#333;">Pulse</div><div class="bt-req">2K votes + 10 Auras</div></div><div style="font-size:10px;color:#333;">locked</div></div>
+            <div class="badge-tier locked"><div class="bt-icon">👑</div><div class="bt-info"><div class="bt-name" style="color:#333;">Icon</div><div class="bt-req">10K votes + legend status</div></div><div style="font-size:10px;color:#333;">locked</div></div>
           </div>
-          <button class="pc-btn" onclick="applyForSlot('artist')">Apply for Artist Slot</button>
-        </div>
-        <div class="portal-card featured">
-          <div class="pc-badge">MOST POPULAR</div>
-          <div class="pc-icon">👗</div>
-          <div class="pc-title">Designer Spotlight Slot</div>
-          <div class="pc-price">$79</div>
-          <div class="pc-desc">Fashion showcase on any music channel. Lookbook format. Live reactions. Direct shop link for purchases during broadcast.</div>
-          <div class="pc-features">
-            <div class="pc-feat">✓ Live on music channels</div>
-            <div class="pc-feat">✓ Lookbook video format</div>
-            <div class="pc-feat">✓ Shop link active during show</div>
-            <div class="pc-feat">✓ Live purchase tracking</div>
-            <div class="pc-feat">✓ Brand exposure report</div>
-          </div>
-          <button class="pc-btn" onclick="applyForSlot('designer')">Apply for Designer Slot</button>
-        </div>
-        <div class="portal-card">
-          <div class="pc-icon">🚀</div>
-          <div class="pc-title">Brand Partnership</div>
-          <div class="pc-price">Contact Us</div>
-          <div class="pc-desc">Major brand drops, exclusive releases, and sponsored channel integrations. Nike, Adidas, SSENSE level partnerships.</div>
-          <div class="pc-features">
-            <div class="pc-feat">✓ Dedicated brand drop moment</div>
-            <div class="pc-feat">✓ Live rep appearance option</div>
-            <div class="pc-feat">✓ Platform-wide promotion</div>
-            <div class="pc-feat">✓ Custom integration</div>
-            <div class="pc-feat">✓ Analytics dashboard</div>
-          </div>
-          <button class="pc-btn" onclick="showToast('Opening brand partnership inquiry...')">Get In Touch</button>
-        </div>
-      </div>
-
-      <!-- APPLICATION FORM -->
-      <div class="apply-form" id="applyForm" style="display:none;">
-        <div class="af-title" id="afTitle">Apply for Artist Slot</div>
-        <div class="af-grid">
-          <div class="form-group"><label>Artist / Brand Name</label><input type="text" class="form-input" placeholder="Your name or brand"/></div>
-          <div class="form-group"><label>Genre / Category</label><input type="text" class="form-input" placeholder="Hip Hop, R&B, Streetwear..."/></div>
-          <div class="form-group"><label>Email</label><input type="email" class="form-input" placeholder="your@email.com"/></div>
-          <div class="form-group"><label>Social Media</label><input type="text" class="form-input" placeholder="@yourhandle"/></div>
-          <div class="form-group" style="grid-column:1/-1;"><label>Video / Lookbook Link</label><input type="text" class="form-input" placeholder="YouTube, Vimeo, or Google Drive link"/></div>
-          <div class="form-group" style="grid-column:1/-1;"><label>Tell us about yourself</label><textarea class="form-input" rows="3" placeholder="Who are you, what is your sound or style, why SoundStage?"></textarea></div>
-        </div>
-        <div style="display:flex;gap:10px;margin-top:16px;">
-          <button class="form-btn" onclick="submitApplication()">Submit Application</button>
-          <button class="form-btn" style="background:transparent;border:1px solid #333;color:#666;" onclick="document.getElementById('applyForm').style.display='none'">Cancel</button>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ═══ PROFILE PAGE ═══ -->
-  <div class="page" id="page-profile" style="display:none;">
-    <div class="page-inner">
-      <div class="profile-card">
-        <div class="profile-avatar" id="profileAv">K</div>
-        <div class="profile-name" id="profileName">Khemra</div>
-        <div class="profile-badge">
-          <span>📻</span> <span style="color:#F5A623;">Freq</span>
+    <!-- ARTIST PORTAL -->
+    <div class="page" id="page-artist" style="display:none;">
+      <div class="page-inner">
+        <div class="page-hero">
+          <div class="ph-title">🎤 Artist & Designer Portal</div>
+          <div class="ph-sub">Your 3 minutes. The world votes. Real fans. Real feedback. Real sales.</div>
         </div>
-        <div class="profile-stats">
-          <div class="ps-item"><div class="ps-n">3</div><div class="ps-l">Auras</div></div>
-          <div class="ps-item"><div class="ps-n">340</div><div class="ps-l">Votes</div></div>
-          <div class="ps-item"><div class="ps-n">18</div><div class="ps-l">Amps</div></div>
+        <div class="portal-grid">
+          <div class="portal-card">
+            <div class="pc-icon">🎵</div>
+            <div class="pc-title">Artist Spotlight Slot</div>
+            <div class="pc-price">$49</div>
+            <div class="pc-desc">3-minute video showcase on your genre channel. Live world votes. Real-time feedback. Fan follows and sales links included.</div>
+            <div class="pc-features"><div class="pc-feat">✓ Live on your genre channel</div><div class="pc-feat">✓ Real-time vote counter</div><div class="pc-feat">✓ Fan follow button live</div><div class="pc-feat">✓ Sales link integration</div><div class="pc-feat">✓ Feedback report after</div></div>
+            <button class="pc-btn" onclick="applyForSlot('artist')">Apply for Artist Slot</button>
+          </div>
+          <div class="portal-card featured">
+            <div class="pc-badge">MOST POPULAR</div>
+            <div class="pc-icon">👗</div>
+            <div class="pc-title">Designer Spotlight Slot</div>
+            <div class="pc-price">$79</div>
+            <div class="pc-desc">Fashion showcase on any music channel. Lookbook format. Live reactions. Direct shop link for purchases during broadcast.</div>
+            <div class="pc-features"><div class="pc-feat">✓ Live on music channels</div><div class="pc-feat">✓ Lookbook video format</div><div class="pc-feat">✓ Shop link active during show</div><div class="pc-feat">✓ Live purchase tracking</div><div class="pc-feat">✓ Brand exposure report</div></div>
+            <button class="pc-btn" onclick="applyForSlot('designer')">Apply for Designer Slot</button>
+          </div>
+          <div class="portal-card">
+            <div class="pc-icon">🚀</div>
+            <div class="pc-title">Brand Partnership</div>
+            <div class="pc-price">Contact Us</div>
+            <div class="pc-desc">Major brand drops, exclusive releases, and sponsored channel integrations.</div>
+            <div class="pc-features"><div class="pc-feat">✓ Dedicated brand drop moment</div><div class="pc-feat">✓ Live rep appearance option</div><div class="pc-feat">✓ Platform-wide promotion</div><div class="pc-feat">✓ Custom integration</div><div class="pc-feat">✓ Analytics dashboard</div></div>
+            <button class="pc-btn" onclick="showToast('Opening brand partnership inquiry...')">Get In Touch</button>
+          </div>
         </div>
-        <button class="form-btn" style="margin-top:16px;" onclick="handleLogout()">Sign Out</button>
+        <div class="apply-form" id="applyForm" style="display:none;">
+          <div class="af-title" id="afTitle">Apply for Artist Slot</div>
+          <div class="af-grid">
+            <div class="form-group"><label>Artist / Brand Name</label><input type="text" class="form-input" placeholder="Your name or brand"/></div>
+            <div class="form-group"><label>Genre / Category</label><input type="text" class="form-input" placeholder="Hip Hop, R&B, Streetwear..."/></div>
+            <div class="form-group"><label>Email</label><input type="email" class="form-input" placeholder="your@email.com"/></div>
+            <div class="form-group"><label>Social Media</label><input type="text" class="form-input" placeholder="@yourhandle"/></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>Video / Lookbook Link</label><input type="text" class="form-input" placeholder="YouTube, Vimeo, or Google Drive link"/></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>Tell us about yourself</label><textarea class="form-input" rows="3" placeholder="Who are you, what is your sound or style, why SoundStage?"></textarea></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="form-btn" onclick="submitApplication()">Submit Application</button>
+            <button class="form-btn" style="background:transparent;border:1px solid #333;color:#666;" onclick="document.getElementById('applyForm').style.display='none'">Cancel</button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="page-profile" style="display:none;">
+      <div class="page-inner">
+        <div class="profile-card">
+          <div class="profile-avatar" id="profileAv">K</div>
+          <div class="profile-name" id="profileName">Khemra</div>
+          <div class="profile-badge"><span>📻</span> <span style="color:#F5A623;">Freq</span></div>
+          <div class="profile-stats">
+            <div class="ps-item"><div class="ps-n">3</div><div class="ps-l">Auras</div></div>
+            <div class="ps-item"><div class="ps-n">340</div><div class="ps-l">Votes</div></div>
+            <div class="ps-item"><div class="ps-n">18</div><div class="ps-l">Amps</div></div>
+          </div>
+          <button class="form-btn" style="margin-top:16px;" onclick="handleLogout()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-</div><!-- end app -->
-
-<div class="toast" id="toast"></div>
-<script src="script.js"></script>
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
 </body>
 </html>
