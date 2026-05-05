@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SoundStage — By Khemra</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- SPLASH SCREEN -->
+  <div class="splash" id="splash">
+    <div class="bg-glow"></div>
+    <div class="scanlines"></div>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <div id="particles"></div>
+
+    <div class="logo-enter">
+      <svg width="100%" viewBox="0 0 580 230" style="max-width:580px;" overflow="visible">
+        <defs>
+          <radialGradient id="sg" cx="27%" cy="52%" r="36%">
+            <stop offset="0%" stop-color="#F5A623" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="#F5A623" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="110" cy="118" rx="98" ry="98" fill="url(#sg)"/>
+        <path class="r1" d="M 6 118 Q 6 20 110 20 Q 214 20 214 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r2" d="M 22 118 Q 22 36 110 36 Q 198 36 198 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r3" d="M 40 118 Q 40 54 110 54 Q 180 54 180 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r4" d="M 60 118 Q 60 74 110 74 Q 160 74 160 118" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <circle class="ex1" cx="110" cy="118" r="10" fill="none" stroke="#F5A623"/>
+        <circle class="ex2" cx="110" cy="118" r="10" fill="none" stroke="#F5A623"/>
+        <text x="110" y="124" text-anchor="middle" dominant-baseline="central"
+          font-family="'Orbitron',sans-serif" font-size="128" font-weight="900"
+          fill="none" stroke="#C4C4C4" stroke-width="1.5" class="sc">S</text>
+        <line class="ab" x1="56" y1="192" x2="164" y2="44" stroke="#F5A623" stroke-linecap="round"/>
+        <line x1="46" y1="198" x2="152" y2="52" stroke="#C07800" stroke-width="2.5" stroke-linecap="round" opacity="0.32"/>
+        <circle class="td" cx="164" cy="44" r="5" fill="#00E5FF"/>
+        <circle class="ad" cx="56" cy="192" r="5" fill="#F5A623"/>
+        <line x1="230" y1="26" x2="230" y2="210" stroke="#161616" stroke-width="1"/>
+        <line x1="242" y1="206" x2="412" y2="206" stroke="#F5A623" stroke-width="0.8" opacity="0.12"/>
+        <rect class="e1" x="242" y="168" width="14" rx="4" fill="#F5A623" opacity="0.28"/>
+        <rect class="e2" x="260" y="156" width="14" rx="4" fill="#F5A623" opacity="0.42"/>
+        <rect class="e3" x="278" y="144" width="14" rx="4" fill="#F5A623" opacity="0.60"/>
+        <rect class="e4" x="296" y="162" width="14" rx="4" fill="#00E5FF" opacity="0.92"/>
+        <rect class="e5" x="314" y="136" width="14" rx="4" fill="#F5A623" opacity="0.84"/>
+        <rect class="e6" x="332" y="166" width="14" rx="4" fill="#F5A623" opacity="0.62"/>
+        <rect class="e7" x="350" y="152" width="14" rx="4" fill="#F5A623" opacity="0.46"/>
+        <rect class="e8" x="368" y="176" width="14" rx="4" fill="#F5A623" opacity="0.32"/>
+        <rect class="e9" x="386" y="158" width="14" rx="4" fill="#F5A623" opacity="0.26"/>
+        <line x1="418" y1="26" x2="418" y2="210" stroke="#161616" stroke-width="1"/>
+        <text class="ww" x="498" y="100" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="68" font-weight="700"
+          letter-spacing="8" fill="#e8e8e8">SOUND</text>
+        <text class="wa" x="498" y="168" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="68" font-weight="700"
+          letter-spacing="8" fill="#F5A623">STAGE</text>
+        <line class="sw" x1="234" y1="198" x2="570" y2="198" stroke="#F5A623" stroke-width="1.5" stroke-linecap="round"/>
+        <text class="bk" x="498" y="220" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="13"
+          letter-spacing="6" fill="#F5A623">BY KHEMRA</text>
+      </svg>
+      <div class="tagline">Where the audience controls the culture</div>
+      <div class="byline">Interstellarr Muzik</div>
+    </div>
+
+    <div class="load-area" id="loadArea">
+      <div class="bar-bg"><div class="bar-fill"></div></div>
+      <div class="load-txt" id="loadTxt">Initializing SoundStage</div>
+    </div>
+
+    <div class="enter-wrap" id="enterWrap">
+      <button class="enter-btn" onclick="enterPlatform()">
+        <span>Enter SoundStage</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN PLATFORM -->
+  <div class="platform" id="platform">
+    <div class="topbar">
+      <svg width="200" height="38" viewBox="0 0 400 76" overflow="visible">
+        <path class="r2" d="M 2 38 Q 2 6 30 6 Q 58 6 58 38" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r3" d="M 8 38 Q 8 12 30 12 Q 52 12 52 38" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <path class="r4" d="M 14 38 Q 14 18 30 18 Q 46 18 46 38" fill="none" stroke="#F5A623" stroke-linecap="round"/>
+        <circle class="ex1" cx="30" cy="38" r="4" fill="none" stroke="#F5A623"/>
+        <text x="30" y="41" text-anchor="middle" dominant-baseline="central"
+          font-family="'Orbitron',sans-serif" font-size="40" font-weight="900"
+          fill="none" stroke="#C8C8C8" stroke-width="1.2" class="sc">S</text>
+        <line class="ab" x1="14" y1="60" x2="46" y2="14" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/>
+        <circle class="td" cx="46" cy="14" r="2.5" fill="#00E5FF"/>
+        <circle class="ad" cx="14" cy="60" r="2.5" fill="#F5A623"/>
+        <line x1="66" y1="8" x2="66" y2="68" stroke="#1a1a1a" stroke-width="0.8"/>
+        <rect class="e1" x="74" y="50" width="6" rx="1.5" fill="#F5A623" opacity="0.3"/>
+        <rect class="e3" x="83" y="44" width="6" rx="1.5" fill="#F5A623" opacity="0.6"/>
+        <rect class="e4" x="92" y="52" width="6" rx="1.5" fill="#00E5FF" opacity="0.9"/>
+        <rect class="e5" x="101" y="40" width="6" rx="1.5" fill="#F5A623" opacity="0.8"/>
+        <rect class="e7" x="110" y="48" width="6" rx="1.5" fill="#F5A623" opacity="0.4"/>
+        <line x1="122" y1="8" x2="122" y2="68" stroke="#1a1a1a" stroke-width="0.8"/>
+        <text class="ww" x="185" y="28" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="22" font-weight="700"
+          letter-spacing="5" fill="#e8e8e8">SOUND</text>
+        <text class="wa" x="185" y="50" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="22" font-weight="700"
+          letter-spacing="5" fill="#F5A623">STAGE</text>
+        <line class="sw" x1="124" y1="64" x2="250" y2="64" stroke="#F5A623" stroke-width="0.8"/>
+        <text class="bk" x="185" y="70" text-anchor="middle" dominant-baseline="central"
+          font-family="'Rajdhani',sans-serif" font-size="7" letter-spacing="3" fill="#F5A623">BY KHEMRA</text>
+      </svg>
+      <div class="topbar-right">
+        <div class="amp-chip">
+          <span>⚡</span>
+          <span class="amp-val" id="ampVal">18</span>
+          <span class="amp-lbl">AMPS</span>
+        </div>
+        <div class="user-pill">
+          <div class="uav">K</div>
+          <span class="unm">KHEMRA</span>
+          <span class="pro">PRO</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ch-strip">
+      <button class="ch-btn active" onclick="switchCh('hiphop',this)">
+        <div class="ch-dot" style="background:#F5A623;"></div>Hip Hop / Rap
+        <span class="live-tag">LIVE</span>
+      </button>
+      <button class="ch-btn" onclick="switchCh('rock',this)">
+        <div class="ch-dot" style="background:#FF3B3B;"></div>Rock / Metal
+      </button>
+      <button class="ch-btn" onclick="switchCh('latin',this)">
+        <div class="ch-dot" style="background:#00E5FF;"></div>Latin
+      </button>
+      <button class="ch-btn" onclick="switchCh('rnb',this)">
+        <div class="ch-dot" style="background:#CC44FF;"></div>R&B / Soul
+      </button>
+      <button class="spot-btn" onclick="switchCh('spotlight',this)">★ Indie Spotlight</button>
+    </div>
+
+    <div class="main-layout">
+      <div class="center-col">
+        <div class="player-wrap" id="playerWrap">
+          <div class="player-bg" id="playerBg">
+            <div class="now-playing-label">Now Playing</div>
+            <div class="np-title" id="npTitle">Sundress</div>
+            <div class="np-artist" id="npArtist">ASAP Rocky</div>
+            <button class="play-btn" onclick="loadVideo()">▶</button>
+          </div>
+          <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none;" allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+          </iframe>
+          <svg class="svg-ov" id="svgOv" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <rect class="region" id="r-jacket" x="28" y="22" width="22" height="28" rx="2"
+              onmouseenter="hoverR(this,'jacket')" onmouseleave="leaveR()" onclick="selectR('jacket')"/>
+            <rect class="region" id="r-shoes" x="30" y="70" width="18" height="14" rx="2"
+              onmouseenter="hoverR(this,'shoes')" onmouseleave="leaveR()" onclick="selectR('shoes')"/>
+            <rect class="region" id="r-pants" x="29" y="50" width="20" height="22" rx="2"
+              onmouseenter="hoverR(this,'pants')" onmouseleave="leaveR()" onclick="selectR('pants')"/>
+            <ellipse class="region" id="r-chain" cx="39" cy="34" rx="6" ry="3"
+              onmouseenter="hoverR(this,'chain')" onmouseleave="leaveR()" onclick="selectR('chain')"/>
+          </svg>
+          <div class="region-label" id="regionLabel"></div>
+          <div class="fashion-card" id="fashionCard">
+            <div class="fc-head">
+              <div class="fc-name" id="fcName"></div>
+              <button class="fc-close" onclick="closeCard()">✕</button>
+            </div>
+            <div class="fc-tag" id="fcTag"></div>
+            <div class="fc-prices" id="fcPrices"></div>
+            <div class="fc-btns">
+              <button class="fc-buy" id="fcBuy">Buy Now</button>
+              <button class="fc-save" id="fcSave">Save to Moyo</button>
+            </div>
+          </div>
+          <button class="ov-btn" id="ovBtn" onclick="toggleOverlay()">✦ Fashion Scan</button>
+          <div class="scan-hint" id="scanHint">Hover over clothing to identify items</div>
+          <div class="ch-bar" id="chBar"></div>
+        </div>
+
+        <div class="now-bar">
+          <div class="now-thumb" id="nowThumb">🎵</div>
+          <div class="now-info">
+            <div class="now-title" id="nowTitle">Sundress — ASAP Rocky</div>
+            <div class="now-sub" id="nowSub">Hip Hop / Rap Channel</div>
+          </div>
+          <div class="controls">
+            <button class="ctrl" onclick="prevVid()">⏮</button>
+            <button class="ctrl-main" id="ppBtn" onclick="togglePlay()">⏸</button>
+            <button class="ctrl" onclick="nextVid()">⏭</button>
+          </div>
+        </div>
+
+        <div class="brand-drop">
+          <div class="live-dot"></div>
+          <div class="drop-txt" id="dropTxt"><strong>NIKE DROP:</strong> Air Max feat. in this video — PRO members 20% off</div>
+          <button class="drop-btn" onclick="showToast('Opening Nike drop!')">Shop Drop</button>
+        </div>
+
+        <div class="queue-wrap">
+          <div class="q-head">Fan Queue — Amp to Push Up <span class="q-sub">5 plays/song max daily</span></div>
+          <div id="queueList"></div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat"><div class="stat-n" id="scanStat">0</div><div class="stat-l">Fashion Scans</div></div>
+          <div class="stat"><div class="stat-n">1.1K</div><div class="stat-l">Watching Live</div></div>
+          <div class="stat"><div class="stat-n">3.2K</div><div class="stat-l">Amps Today</div></div>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <div class="panel-lbl">Amp Wallet</div>
+        <div class="wallet">
+          <div class="wt-top">
+            <div><div class="wt-lbl">Your Amps</div><div class="wt-sub">Spend to push songs up</div></div>
+            <div class="wt-cnt" id="wCnt">18</div>
+          </div>
+          <div class="amp-pips" id="ampPips"></div>
+          <div class="tier-row">
+            <div class="tc active-tc"><div class="tc-n">PRO</div><div class="tc-v">20 ⚡</div><div class="tc-l">per day</div></div>
+            <div class="tc"><div class="tc-n" style="color:#444;">FREE</div><div class="tc-v" style="color:#444;">5 ⚡</div><div class="tc-l">per day</div></div>
+          </div>
+        </div>
+        <div class="panel-lbl">Live Indie Spotlight</div>
+        <div class="spot-scroll">
+          <div class="spot-card">
+            <div class="spot-head">
+              <div class="spot-icon">🎤</div>
+              <div><div class="spot-name">Solé Wave</div><div class="spot-type">Indie R&B / Soul</div></div>
+            </div>
+            <div class="spot-timer"><div class="live-dot"></div>LIVE — <strong id="spotTime">2:41</strong> remaining</div>
+            <div class="spot-votes">
+              <button class="sv-btn" onclick="spotVote('fire')">🔥 Fire</button>
+              <button class="sv-btn" onclick="spotVote('love')">💜 Love</button>
+              <button class="sv-btn" onclick="spotVote('amp')">⚡ Amp</button>
+            </div>
+            <div class="fb-bars">
+              <div class="fb-row"><div class="fb-l">Fire</div><div class="fb-track"><div class="fb-fill" id="fb1" style="width:62%;background:#FF3B3B;"></div></div><div class="fb-pct" id="fp1">62%</div></div>
+              <div class="fb-row"><div class="fb-l">Love</div><div class="fb-track"><div class="fb-fill" id="fb2" style="width:28%;background:#CC44FF;"></div></div><div class="fb-pct" id="fp2">28%</div></div>
+              <div class="fb-row"><div class="fb-l">Amp</div><div class="fb-track"><div class="fb-fill" id="fb3" style="width:10%;background:#F5A623;"></div></div><div class="fb-pct" id="fp3">10%</div></div>
+            </div>
+          </div>
+          <div class="spot-card" style="border-color:rgba(0,229,255,0.2);">
+            <div class="spot-head">
+              <div class="spot-icon" style="background:rgba(0,229,255,0.1);border-color:rgba(0,229,255,0.2);">👗</div>
+              <div><div class="spot-name" style="color:#00E5FF;">NXUS Studio</div><div class="spot-type" style="color:#00E5FF;">Fashion — Streetwear</div></div>
+            </div>
+            <div class="spot-timer" style="color:#00E5FF;">Up Next — 4:12</div>
+            <button class="reminder-btn" onclick="showToast('Reminder set for NXUS Studio!')">Set Reminder</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
