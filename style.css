@@ -38,7 +38,7 @@ html,body{width:100%;height:100%;background:var(--black);color:var(--text);font-
 .bar-fill{height:100%;width:0;background:var(--amber);border-radius:2px;box-shadow:0 0 10px rgba(245,166,35,0.7);animation:fill-bar 2.8s cubic-bezier(0.4,0,0.2,1) 2.8s both;}
 @keyframes fill-bar{0%{width:0;}100%{width:100%;}}
 .load-txt{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,0.18);text-transform:uppercase;}
-.enter-wrap{position:absolute;bottom:60px;opacity:0;z-index:2;}
+.enter-wrap{position:relative;bottom:auto;opacity:0;z-index:2;margin-top:24px;}
 .enter-btn{padding:13px 52px;background:transparent;border:1px solid var(--amber);border-radius:1px;color:var(--amber);font-family:var(--ob);font-size:11px;letter-spacing:4px;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:color 0.25s;}
 .enter-btn::before{content:'';position:absolute;inset:0;background:var(--amber);transform:scaleX(0);transform-origin:left;transition:transform 0.25s ease;}
 .enter-btn:hover{color:#000;}
