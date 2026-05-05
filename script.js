@@ -153,16 +153,15 @@ var loadInterval = setInterval(function(){
 
 setTimeout(function(){
   var la = document.getElementById('loadArea');
-  var ew = document.getElementById('enterWrap');
   if(la) la.style.display = 'none';
+  var ew = document.getElementById('enterWrap');
   if(ew){
-    ew.style.transition = 'opacity 0.7s ease';
     ew.style.opacity = '1';
     ew.style.position = 'relative';
-    ew.style.bottom = 'auto';
     ew.style.marginTop = '24px';
+    ew.style.display = 'block';
   }
-}, 3000);
+}, 2500);
 
 /* Particles */
 var cols = ['#F5A623','#00E5FF','#C07800','#FFD080','#ffffff'];
