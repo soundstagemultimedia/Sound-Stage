@@ -3,55 +3,36 @@
    By Khemra
 ═══════════════════════════════ */
 
-/* ═══ ENTER PLATFORM ═══ */
+/* ═══ ENTER — must be global before DOM loads ═══ */
 function enterPlatform(){
   var splash = document.getElementById('splash');
   var app = document.getElementById('app');
-  if(splash){
-    splash.style.opacity = '0';
-    splash.style.transition = 'opacity 0.8s ease';
-    setTimeout(function(){ splash.style.display = 'none'; }, 800);
-  }
-  if(app){
-    app.style.opacity = '1';
-    app.style.pointerEvents = 'all';
-  }
+  if(splash) splash.classList.add('hidden');
+  if(app) app.classList.add('visible');
   showPage('login');
 }
 window.enterPlatform = enterPlatform;
 
-/* ═══ SPLASH ═══ */
-document.addEventListener('DOMContentLoaded', function(){
-
-var loadMsgs = ['Initializing SoundStage','Loading your channels','Syncing Amp wallet','Connecting the culture','Stage is ready'];
-var msgIdx = 0;
-var loadInterval = setInterval(function(){
-  msgIdx++;
-  if(msgIdx < loadMsgs.length){
-    var el = document.getElementById('loadTxt');
-    if(el) el.textContent = loadMsgs[msgIdx];
-  } else { clearInterval(loadInterval); }
-}, 1000);
-
-/* Particles */
-var cols = ['#F5A623','#00E5FF','#C07800','#FFD080','#ffffff'];
-var ptc = document.getElementById('particles');
-if(ptc){
-  for(var i = 0; i < 24; i++){
-    var pt = document.createElement('div');
-    pt.className = 'pt';
-    var sz = Math.random() * 2.5 + 0.8;
-    pt.style.cssText = [
-      'width:'+sz+'px','height:'+sz+'px',
-      'background:'+cols[Math.floor(Math.random()*cols.length)],
-      'opacity:'+(Math.random()*0.35+0.08),
-      'left:'+(Math.random()*100)+'%',
-      'animation-duration:'+(Math.random()*9+7)+'s',
-      'animation-delay:-'+(Math.random()*8)+'s'
-    ].join(';');
-    ptc.appendChild(pt);
-  }
+function showPage(pageId){
+  var app = document.getElementById('app');
+  if(app) app.classList.add('visible');
+  var splash = document.getElementById('splash');
+  if(splash) splash.classList.add('hidden');
+  var pages = ['login','stage','aura','artist','profile'];
+  pages.forEach(function(p){
+    var el = document.getElementById('page-'+p);
+    if(el) el.style.display = p === pageId ? 'flex' : 'none';
+  });
+  var navPages = ['stage','aura','artist'];
+  navPages.forEach(function(p){
+    var btn = document.getElementById('nav-'+p);
+    if(btn) btn.classList.toggle('active', p === pageId);
+  });
+  if(pageId === 'stage'){ renderQueue(); renderMiniMoyo(); }
+  if(pageId === 'aura') renderAuras();
+  if(pageId === 'profile') renderProfile();
 }
+window.showPage = showPage;
 
 /* ═══ STATE ═══ */
 var amps = 18;
@@ -65,7 +46,6 @@ var curIdx = 0;
 var currentUser = null;
 var auraAdds = 0;
 var moyoItems = [];
-
 var auras = [
   {id:1,name:'Midnight Waves',emoji:'🌙',tracks:12,votes:87,shares:23,published:true,cover:'#1a0a2e'},
   {id:2,name:'Street Gospel',emoji:'🔥',tracks:8,votes:142,shares:41,published:true,cover:'#2e0a0a'},
@@ -153,27 +133,26 @@ var channels = {
 
 /* ═══ FASHION ITEMS ═══ */
 var fashionItems = {
-  jacket:{name:'Vintage Coach Jacket',tag:'Outerwear — Spotted on ASAP Rocky',prices:[{s:'SSENSE',p:'$340',best:false},{s:'Grailed',p:'$280',best:false},{s:'StockX',p:'$260',best:true}],bp:'$260',bs:'StockX'},
-  shoes:{name:'Nike Air Force 1 Lo',tag:'Footwear — Spotted in video',prices:[{s:'Nike.com',p:'$110',best:false},{s:'GOAT',p:'$95',best:false},{s:'StockX',p:'$88',best:true}],bp:'$88',bs:'StockX'},
-  pants:{name:"Levi's 501 Baggy Denim",tag:'Bottoms — Spotted in video',prices:[{s:"Levi's",p:'$128',best:false},{s:'Nordstrom',p:'$110',best:false},{s:'Depop',p:'$65',best:true}],bp:'$65',bs:'Depop'},
-  chain:{name:'Cuban Link Chain Gold',tag:'Accessories — Spotted on ASAP Rocky',prices:[{s:'Farfetch',p:'$480',best:false},{s:'Grailed',p:'$320',best:false},{s:'eBay',p:'$195',best:true}],bp:'$195',bs:'eBay'}
-};
-
-/* ═══ PAGE NAVIGATION ═══ */
-window.showPage = function(pageId){
-  var pages = ['login','stage','aura','artist','profile'];
-  pages.forEach(function(p){
-    var el = document.getElementById('page-'+p);
-    if(el) el.style.display = p === pageId ? 'flex' : 'none';
-  });
-  var navPages = ['stage','aura','artist'];
-  navPages.forEach(function(p){
-    var btn = document.getElementById('nav-'+p);
-    if(btn) btn.classList.toggle('active', p === pageId);
-  });
-  if(pageId === 'stage') renderQueue();
-  if(pageId === 'aura') renderAuras();
-  if(pageId === 'profile') renderProfile();
+  jacket:{
+    name:'Vintage Coach Jacket',tag:'Outerwear — Spotted on ASAP Rocky',
+    prices:[{s:'SSENSE',p:'$340',best:false},{s:'Grailed',p:'$280',best:false},{s:'StockX',p:'$260',best:true}],
+    bp:'$260',bs:'StockX'
+  },
+  shoes:{
+    name:'Nike Air Force 1 Lo',tag:'Footwear — Spotted in video',
+    prices:[{s:'Nike.com',p:'$110',best:false},{s:'GOAT',p:'$95',best:false},{s:'StockX',p:'$88',best:true}],
+    bp:'$88',bs:'StockX'
+  },
+  pants:{
+    name:"Levi's 501 Baggy Denim",tag:'Bottoms — Spotted in video',
+    prices:[{s:"Levi's",p:'$128',best:false},{s:'Nordstrom',p:'$110',best:false},{s:'Depop',p:'$65',best:true}],
+    bp:'$65',bs:'Depop'
+  },
+  chain:{
+    name:'Cuban Link Chain Gold',tag:'Accessories — Spotted on ASAP Rocky',
+    prices:[{s:'Farfetch',p:'$480',best:false},{s:'Grailed',p:'$320',best:false},{s:'eBay',p:'$195',best:true}],
+    bp:'$195',bs:'eBay'
+  }
 };
 
 /* ═══ AUTH ═══ */
@@ -241,11 +220,15 @@ function renderQueue(){
     html += '<div class="q-item'+(s.active?' active':'')+'" onclick="jumpTo('+i+')">'
       +'<div class="q-rank">'+(i+1)+'</div>'
       +'<div class="q-emoji">'+s.e+'</div>'
-      +'<div class="q-info"><div class="q-title">'+s.t+'</div><div class="q-artist">'+s.a+'</div></div>'
+      +'<div class="q-info">'
+      +'<div class="q-title">'+s.t+'</div>'
+      +'<div class="q-artist">'+s.a+'</div>'
+      +'</div>'
       +'<div style="display:flex;gap:3px;flex-shrink:0;">'
       +'<button class="amp-btn" onclick="event.stopPropagation();ampVote('+i+',this)">⚡ '+s.v+'</button>'
       +'<button class="aura-add" id="aura-'+i+'" onclick="event.stopPropagation();addToAura('+i+',this)">+ Aura</button>'
-      +'</div></div>';
+      +'</div>'
+      +'</div>';
   });
   var ql = document.getElementById('queueList');
   if(ql) ql.innerHTML = html;
@@ -304,7 +287,8 @@ window.loadVideo = function(vid){
   var bg=document.getElementById('playerBg');
   if(!vid){ vid=getQueue()[curIdx].vid; }
   if(frame){
-    frame.src='https://www.youtube.com/embed/'+vid+'?autoplay=1&modestbranding=1&rel=0&color=white';
+    frame.src='https://www.youtube.com/embed/'+vid
+      +'?autoplay=1&modestbranding=1&rel=0&color=white';
     frame.style.display='block';
   }
   if(bg) bg.style.display='none';
@@ -313,7 +297,9 @@ window.loadVideo = function(vid){
 /* ═══ CHANNEL ═══ */
 window.switchCh = function(ch,btn){
   curChannel=ch; curIdx=0;
-  document.querySelectorAll('.ch-btn,.spot-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.ch-btn,.spot-btn').forEach(function(b){
+    b.classList.remove('active');
+  });
   if(btn) btn.classList.add('active');
   var chData=channels[ch];
   var cb=document.getElementById('chBar');
@@ -358,9 +344,16 @@ window.toggleOverlay = function(){
   var ovb=document.getElementById('ovBtn');
   var sh=document.getElementById('scanHint');
   if(svo) svo.classList.toggle('on',overlayOn);
-  if(ovb){ ovb.classList.toggle('on',overlayOn); ovb.textContent=overlayOn?'✦ Scan ON':'✦ Fashion Scan'; }
+  if(ovb){
+    ovb.classList.toggle('on',overlayOn);
+    ovb.textContent=overlayOn?'✦ Scan ON':'✦ Fashion Scan';
+  }
   if(sh) sh.classList.toggle('show',overlayOn);
-  if(!overlayOn){ closeCard(); var rl=document.getElementById('regionLabel'); if(rl) rl.classList.remove('show'); }
+  if(!overlayOn){
+    closeCard();
+    var rl=document.getElementById('regionLabel');
+    if(rl) rl.classList.remove('show');
+  }
   showToast(overlayOn?'FASHION SCAN ON — HOVER OVER CLOTHING':'FASHION SCAN OFF');
 };
 
@@ -407,19 +400,27 @@ window.selectR = function(item){
     var html='';
     d.prices.forEach(function(p){
       html+='<div class="fc-row'+(p.best?' best':'')+'">'
-        +'<span class="fc-store">'+p.s+(p.best?' <span class="fc-btag">BEST</span>':'')+'</span>'
-        +'<span class="fc-price">'+p.p+'</span></div>';
+        +'<span class="fc-store">'+p.s
+        +(p.best?' <span class="fc-btag">BEST</span>':'')
+        +'</span>'
+        +'<span class="fc-price">'+p.p+'</span>'
+        +'</div>';
     });
     fcp.innerHTML=html;
   }
-  if(fcb){ fcb.textContent='Buy — '+d.bp+' on '+d.bs; fcb.onclick=function(){ showToast('OPENING CHECKOUT: '+d.name+' — '+d.bp); }; }
-  if(fcs){ fcs.onclick=function(){
-    moyoItems.push({name:d.name,emoji:'👕',price:d.bp});
-    if(moyoItems.length>3) moyoItems=moyoItems.slice(-3);
-    renderMiniMoyo();
-    showToast(d.name+' SAVED TO MOYO!');
-    closeCard();
-  }; }
+  if(fcb){
+    fcb.textContent='Buy — '+d.bp+' on '+d.bs;
+    fcb.onclick=function(){ showToast('OPENING CHECKOUT: '+d.name+' — '+d.bp); };
+  }
+  if(fcs){
+    fcs.onclick=function(){
+      moyoItems.push({name:d.name,emoji:'👕',price:d.bp});
+      if(moyoItems.length>3) moyoItems=moyoItems.slice(-3);
+      renderMiniMoyo();
+      showToast(d.name+' SAVED TO MOYO!');
+      closeCard();
+    };
+  }
   if(fc) fc.classList.add('show');
 };
 
@@ -433,12 +434,13 @@ window.closeCard = function(){
 function renderMiniMoyo(){
   var mt=document.getElementById('mmTitle');
   var mi=document.getElementById('mmItems');
+  if(!mt||!mi) return;
   if(moyoItems.length===0){
-    if(mt) mt.textContent='Nothing saved yet';
-    if(mi) mi.innerHTML='<div class="mm-empty">Turn on Fashion Scan · hover clothing · save pieces</div>';
+    mt.textContent='Nothing saved yet';
+    mi.innerHTML='<div class="mm-empty">Turn on Fashion Scan · hover clothing · save pieces</div>';
     return;
   }
-  if(mt) mt.textContent=moyoItems.length+' piece'+(moyoItems.length>1?'s':'')+' saved';
+  mt.textContent=moyoItems.length+' piece'+(moyoItems.length>1?'s':'')+' saved';
   var h='';
   moyoItems.forEach(function(item){
     h+='<div class="mm-item">'
@@ -448,7 +450,7 @@ function renderMiniMoyo(){
       +'<button class="mm-buy" onclick="showToast(\'Opening checkout!\')">$</button>'
       +'</div>';
   });
-  if(mi) mi.innerHTML=h;
+  mi.innerHTML=h;
 }
 
 /* ═══ AMPS ═══ */
@@ -458,7 +460,9 @@ function updateAmps(){
   if(av) av.textContent=amps;
   if(wc) wc.textContent=amps;
   var html='';
-  for(var i=0;i<20;i++) html+='<div class="pip" style="background:'+(i<amps?'#F5A623':'#1c1c1c')+'"></div>';
+  for(var i=0;i<20;i++){
+    html+='<div class="pip" style="background:'+(i<amps?'#F5A623':'#1c1c1c')+'"></div>';
+  }
   var pips=document.getElementById('ampPips');
   if(pips) pips.innerHTML=html;
 }
@@ -479,6 +483,7 @@ window.spotVote = function(type){
   showToast('⚡ YOU VOTED FOR SATORI BLU!');
 };
 
+/* ═══ SPOTLIGHT TIMER ═══ */
 setInterval(function(){
   if(spotSecs>0) spotSecs--;
   var m=Math.floor(spotSecs/60),s=spotSecs%60;
@@ -518,7 +523,7 @@ function renderAuras(){
 
 window.voteAura = function(id){
   var a=auras.find(function(x){ return x.id===id; });
-  if(!a){ return; }
+  if(!a) return;
   if(!a.published){ showToast('Publish your Aura first!'); return; }
   a.votes++;
   renderAuras();
@@ -530,7 +535,12 @@ window.createAura = function(){
   var emojis=['🎵','🌊','💜','🎤','✨'];
   var covers=['#1a2e0a','#2e1a0a','#0a0a2e','#2e0a1a','#1a1a0a'];
   var idx=auras.length%5;
-  auras.push({id:auras.length+1,name:names[idx],emoji:emojis[idx],tracks:0,votes:0,shares:0,published:false,cover:covers[idx]});
+  auras.push({
+    id:auras.length+1,
+    name:names[idx],emoji:emojis[idx],
+    tracks:0,votes:0,shares:0,
+    published:false,cover:covers[idx]
+  });
   renderAuras();
   showToast('New Aura created! Add tracks and publish it.');
 };
@@ -539,7 +549,9 @@ window.createAura = function(){
 window.applyForSlot = function(type){
   var af=document.getElementById('applyForm');
   var at=document.getElementById('afTitle');
-  if(at) at.textContent=type==='artist'?'Apply for Artist Spotlight Slot':'Apply for Designer Spotlight Slot';
+  if(at) at.textContent=type==='artist'
+    ?'Apply for Artist Spotlight Slot'
+    :'Apply for Designer Spotlight Slot';
   if(af){ af.style.display='block'; af.scrollIntoView({behavior:'smooth'}); }
 };
 
@@ -568,9 +580,30 @@ function showToast(msg){
 }
 window.showToast = showToast;
 
-/* ═══ INIT ═══ */
-updateAmps();
-renderQueue();
-renderMiniMoyo();
+/* ═══ PARTICLES ═══ */
+document.addEventListener('DOMContentLoaded',function(){
+  var cols=['#F5A623','#00E5FF','#C07800','#FFD080','#ffffff'];
+  var ptc=document.getElementById('particles');
+  if(ptc){
+    for(var i=0;i<24;i++){
+      var pt=document.createElement('div');
+      pt.className='pt';
+      var sz=Math.random()*2.5+0.8;
+      pt.style.cssText=[
+        'width:'+sz+'px',
+        'height:'+sz+'px',
+        'background:'+cols[Math.floor(Math.random()*cols.length)],
+        'opacity:'+(Math.random()*0.35+0.08),
+        'left:'+(Math.random()*100)+'%',
+        'animation-duration:'+(Math.random()*9+7)+'s',
+        'animation-delay:-'+(Math.random()*8)+'s'
+      ].join(';');
+      ptc.appendChild(pt);
+    }
+  }
 
-}); /* END DOMContentLoaded */
+  /* INIT */
+  updateAmps();
+  renderQueue();
+  renderMiniMoyo();
+});
