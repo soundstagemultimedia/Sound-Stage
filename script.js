@@ -3,7 +3,55 @@
    By Khemra
 ═══════════════════════════════ */
 
+/* ═══ ENTER PLATFORM ═══ */
+function enterPlatform(){
+  var splash = document.getElementById('splash');
+  var app = document.getElementById('app');
+  if(splash){
+    splash.style.opacity = '0';
+    splash.style.transition = 'opacity 0.8s ease';
+    setTimeout(function(){ splash.style.display = 'none'; }, 800);
+  }
+  if(app){
+    app.style.opacity = '1';
+    app.style.pointerEvents = 'all';
+  }
+  showPage('login');
+}
+window.enterPlatform = enterPlatform;
+
+/* ═══ SPLASH ═══ */
 document.addEventListener('DOMContentLoaded', function(){
+
+var loadMsgs = ['Initializing SoundStage','Loading your channels','Syncing Amp wallet','Connecting the culture','Stage is ready'];
+var msgIdx = 0;
+var loadInterval = setInterval(function(){
+  msgIdx++;
+  if(msgIdx < loadMsgs.length){
+    var el = document.getElementById('loadTxt');
+    if(el) el.textContent = loadMsgs[msgIdx];
+  } else { clearInterval(loadInterval); }
+}, 1000);
+
+/* Particles */
+var cols = ['#F5A623','#00E5FF','#C07800','#FFD080','#ffffff'];
+var ptc = document.getElementById('particles');
+if(ptc){
+  for(var i = 0; i < 24; i++){
+    var pt = document.createElement('div');
+    pt.className = 'pt';
+    var sz = Math.random() * 2.5 + 0.8;
+    pt.style.cssText = [
+      'width:'+sz+'px','height:'+sz+'px',
+      'background:'+cols[Math.floor(Math.random()*cols.length)],
+      'opacity:'+(Math.random()*0.35+0.08),
+      'left:'+(Math.random()*100)+'%',
+      'animation-duration:'+(Math.random()*9+7)+'s',
+      'animation-delay:-'+(Math.random()*8)+'s'
+    ].join(';');
+    ptc.appendChild(pt);
+  }
+}
 
 /* ═══ STATE ═══ */
 var amps = 18;
@@ -11,28 +59,21 @@ var overlayOn = false;
 var spotSecs = 161;
 var scanCount = 0;
 var labelTimeout = null;
-var spVotes = {fire:62,love:28,amp:10};
+var spVotes = {fire:62, love:28, amp:10};
 var curChannel = 'hiphop';
 var curIdx = 0;
-var curView = 'rack';
-var curFilter = 'all';
 var currentUser = null;
+var auraAdds = 0;
+var moyoItems = [];
+
 var auras = [
   {id:1,name:'Midnight Waves',emoji:'🌙',tracks:12,votes:87,shares:23,published:true,cover:'#1a0a2e'},
   {id:2,name:'Street Gospel',emoji:'🔥',tracks:8,votes:142,shares:41,published:true,cover:'#2e0a0a'},
   {id:3,name:'Chrome Dreams',emoji:'⚡',tracks:15,votes:111,shares:19,published:true,cover:'#0a1a2e'},
   {id:4,name:'Late Night Frequency',emoji:'📻',tracks:6,votes:0,shares:0,published:false,cover:'#0a2e1a'}
 ];
-var closetItems = [
-  {id:1,name:'Coach Jacket',price:'$260',emoji:'🧥',cat:'tops',color:'#4a5568',worn:false},
-  {id:2,name:'Air Force 1',price:'$88',emoji:'👟',cat:'shoes',color:'#ffffff',worn:false},
-  {id:3,name:'Denim 501',price:'$65',emoji:'👖',cat:'bottoms',color:'#3b5bdb',worn:false},
-  {id:4,name:'Cuban Chain',price:'$195',emoji:'📿',cat:'accessories',color:'#FFD700',worn:false},
-  {id:5,name:'Vintage Tee',price:'$45',emoji:'👕',cat:'tops',color:'#1a1a2e',worn:false},
-  {id:6,name:'Yeezy Slides',price:'$74',emoji:'🩴',cat:'shoes',color:'#c8a882',worn:false}
-];
 
-/* ═══ CHANNEL DATA ═══ */
+/* ═══ CHANNELS ═══ */
 var channels = {
   hiphop:{
     color:'#F5A623',
@@ -94,7 +135,7 @@ var channels = {
     drop:'<strong>HOT TOPIC DROP:</strong> Exclusive merch collab — limited run',
     queue:[
       {e:'🖤',t:'Welcome to the Black Parade',a:'My Chemical Romance',v:1340,vid:'RRKJiM9Njwk',active:true},
-      {e:'💚',t:'Sugar We\'re Goin Down',a:'Fall Out Boy',v:987,vid:'h3l6bwCRMOA',active:false},
+      {e:'💚',t:"Sugar We're Goin Down",a:'Fall Out Boy',v:987,vid:'h3l6bwCRMOA',active:false},
       {e:'🎵',t:'Helena',a:'My Chemical Romance',v:823,vid:'UCCyoaB_8ks',active:false},
       {e:'⚡',t:'I Write Sins',a:'Panic! At The Disco',v:711,vid:'Pim6KqEMaKg',active:false},
       {e:'🔥',t:'Misery Business',a:'Paramore',v:634,vid:'aCyGvGEtOwc',active:false}
@@ -104,129 +145,50 @@ var channels = {
     color:'#F5A623',
     drop:'<strong>INDIE SPOTLIGHT:</strong> Submit your 3-min slot — $49 artists / $79 designers',
     queue:[
-      {e:'🎤',t:'Solé Wave — NEW',a:'Indie R&B',v:312,vid:'c6C2T87JQKQ',active:true},
-      {e:'👗',t:'NXUS Studio Drop',a:'Fashion Showcase',v:198,vid:'c6C2T87JQKQ',active:false}
+      {e:'🦋',t:'Satori Blu — LIVE NOW',a:'Indie R&B / Soul',v:847,vid:'JmKz4LwfhkI',active:true},
+      {e:'👗',t:'NXUS Studio Drop',a:'Fashion Showcase',v:198,vid:'JmKz4LwfhkI',active:false}
     ]
   }
 };
 
 /* ═══ FASHION ITEMS ═══ */
 var fashionItems = {
-  jacket:{
-    name:'Vintage Coach Jacket',tag:'Outerwear — Spotted on ASAP Rocky',
-    prices:[{s:'SSENSE',p:'$340',best:false},{s:'Grailed',p:'$280',best:false},{s:'StockX',p:'$260',best:true}],
-    bp:'$260',bs:'StockX'
-  },
-  shoes:{
-    name:'Nike Air Force 1 Lo',tag:'Footwear — Spotted in video',
-    prices:[{s:'Nike.com',p:'$110',best:false},{s:'GOAT',p:'$95',best:false},{s:'StockX',p:'$88',best:true}],
-    bp:'$88',bs:'StockX'
-  },
-  pants:{
-    name:"Levi's 501 Baggy Denim",tag:'Bottoms — Spotted in video',
-    prices:[{s:"Levi's",p:'$128',best:false},{s:'Nordstrom',p:'$110',best:false},{s:'Depop',p:'$65',best:true}],
-    bp:'$65',bs:'Depop'
-  },
-  chain:{
-    name:'Cuban Link Chain Gold',tag:'Accessories — Spotted on ASAP Rocky',
-    prices:[{s:'Farfetch',p:'$480',best:false},{s:'Grailed',p:'$320',best:false},{s:'eBay',p:'$195',best:true}],
-    bp:'$195',bs:'eBay'
-  }
+  jacket:{name:'Vintage Coach Jacket',tag:'Outerwear — Spotted on ASAP Rocky',prices:[{s:'SSENSE',p:'$340',best:false},{s:'Grailed',p:'$280',best:false},{s:'StockX',p:'$260',best:true}],bp:'$260',bs:'StockX'},
+  shoes:{name:'Nike Air Force 1 Lo',tag:'Footwear — Spotted in video',prices:[{s:'Nike.com',p:'$110',best:false},{s:'GOAT',p:'$95',best:false},{s:'StockX',p:'$88',best:true}],bp:'$88',bs:'StockX'},
+  pants:{name:"Levi's 501 Baggy Denim",tag:'Bottoms — Spotted in video',prices:[{s:"Levi's",p:'$128',best:false},{s:'Nordstrom',p:'$110',best:false},{s:'Depop',p:'$65',best:true}],bp:'$65',bs:'Depop'},
+  chain:{name:'Cuban Link Chain Gold',tag:'Accessories — Spotted on ASAP Rocky',prices:[{s:'Farfetch',p:'$480',best:false},{s:'Grailed',p:'$320',best:false},{s:'eBay',p:'$195',best:true}],bp:'$195',bs:'eBay'}
 };
-
-/* ═══ SPLASH ═══ */
-var loadMsgs = [
-  'Initializing SoundStage',
-  'Loading your channels',
-  'Syncing Amp wallet',
-  'Connecting the culture',
-  'Stage is ready'
-];
-var msgIdx = 0;
-var loadInterval = setInterval(function(){
-  msgIdx++;
-  if(msgIdx < loadMsgs.length){
-    var el = document.getElementById('loadTxt');
-    if(el) el.textContent = loadMsgs[msgIdx];
-  } else { clearInterval(loadInterval); }
-}, 1000);
-
-setTimeout(function(){
-  var la = document.getElementById('loadArea');
-  if(la) la.style.display = 'none';
-  var ew = document.getElementById('enterWrap');
-  if(ew){
-    ew.style.opacity = '1';
-    ew.style.position = 'relative';
-    ew.style.marginTop = '24px';
-    ew.style.display = 'block';
-  }
-}, 2500);
-
-/* Particles */
-var cols = ['#F5A623','#00E5FF','#C07800','#FFD080','#ffffff'];
-var ptc = document.getElementById('particles');
-if(ptc){
-  for(var i = 0; i < 24; i++){
-    var pt = document.createElement('div');
-    pt.className = 'pt';
-    var sz = Math.random() * 2.5 + 0.8;
-    pt.style.cssText = [
-      'width:'+sz+'px','height:'+sz+'px',
-      'background:'+cols[Math.floor(Math.random()*cols.length)],
-      'opacity:'+(Math.random()*0.35+0.08),
-      'left:'+(Math.random()*100)+'%',
-      'animation-duration:'+(Math.random()*9+7)+'s',
-      'animation-delay:-'+(Math.random()*8)+'s'
-    ].join(';');
-    ptc.appendChild(pt);
-  }
-}
 
 /* ═══ PAGE NAVIGATION ═══ */
 window.showPage = function(pageId){
-  /* Hide splash */
-  if(pageId !== 'splash'){
-    var splash = document.getElementById('splash');
-    var app = document.getElementById('app');
-    if(splash) splash.classList.add('hidden');
-    if(app) app.classList.add('visible');
-  }
-
-  /* Show correct page */
-  var pages = ['login','stage','aura','moyo','artist','profile'];
+  var pages = ['login','stage','aura','artist','profile'];
   pages.forEach(function(p){
     var el = document.getElementById('page-'+p);
     if(el) el.style.display = p === pageId ? 'flex' : 'none';
   });
-
-  /* Update nav */
-  var navPages = ['stage','aura','moyo','artist'];
+  var navPages = ['stage','aura','artist'];
   navPages.forEach(function(p){
     var btn = document.getElementById('nav-'+p);
     if(btn) btn.classList.toggle('active', p === pageId);
   });
-
-  /* Page-specific init */
   if(pageId === 'stage') renderQueue();
   if(pageId === 'aura') renderAuras();
-  if(pageId === 'moyo') renderCloset();
   if(pageId === 'profile') renderProfile();
 };
 
 /* ═══ AUTH ═══ */
 window.switchLoginTab = function(tab){
-  document.getElementById('login-in').style.display = tab === 'in' ? 'block' : 'none';
-  document.getElementById('login-up').style.display = tab === 'up' ? 'block' : 'none';
-  document.getElementById('ltab-in').classList.toggle('active', tab === 'in');
-  document.getElementById('ltab-up').classList.toggle('active', tab === 'up');
+  document.getElementById('login-in').style.display = tab==='in'?'block':'none';
+  document.getElementById('login-up').style.display = tab==='up'?'block':'none';
+  document.getElementById('ltab-in').classList.toggle('active', tab==='in');
+  document.getElementById('ltab-up').classList.toggle('active', tab==='up');
 };
 
 window.handleLogin = function(){
   var email = document.getElementById('loginEmail').value;
   var pass = document.getElementById('loginPass').value;
-  if(!email || !pass){ showToast('Please enter email and password'); return; }
-  currentUser = {name: email.split('@')[0], email: email, role: 'fan'};
+  if(!email||!pass){ showToast('Please enter email and password'); return; }
+  currentUser = {name:email.split('@')[0], email:email, role:'fan'};
   updateUserUI();
   showPage('stage');
   showToast('Welcome back to SoundStage!');
@@ -237,11 +199,11 @@ window.handleSignup = function(){
   var email = document.getElementById('signupEmail').value;
   var pass = document.getElementById('signupPass').value;
   var role = document.getElementById('signupRole').value;
-  if(!name || !email || !pass){ showToast('Please fill in all fields'); return; }
-  currentUser = {name: name, email: email, role: role};
+  if(!name||!email||!pass){ showToast('Please fill in all fields'); return; }
+  currentUser = {name:name, email:email, role:role};
   updateUserUI();
   showPage('stage');
-  showToast('Welcome to SoundStage ' + name + '!');
+  showToast('Welcome to SoundStage '+name+'!');
 };
 
 window.handleGoogleAuth = function(){
@@ -253,21 +215,20 @@ window.handleGoogleAuth = function(){
 
 window.handleLogout = function(){
   currentUser = null;
-  var up = document.getElementById('userPill');
-  var ua = document.getElementById('userAv');
-  var un = document.getElementById('userName');
-  if(ua) ua.textContent = '?';
-  if(un) un.textContent = 'Sign In';
+  var ua=document.getElementById('userAv');
+  var un=document.getElementById('userName');
+  if(ua) ua.textContent='?';
+  if(un) un.textContent='Sign In';
   showPage('login');
   showToast('Signed out — see you soon!');
 };
 
 function updateUserUI(){
   if(!currentUser) return;
-  var av = document.getElementById('userAv');
-  var nm = document.getElementById('userName');
-  if(av) av.textContent = currentUser.name.charAt(0).toUpperCase();
-  if(nm) nm.textContent = currentUser.name;
+  var av=document.getElementById('userAv');
+  var nm=document.getElementById('userName');
+  if(av) av.textContent=currentUser.name.charAt(0).toUpperCase();
+  if(nm) nm.textContent=currentUser.name;
 }
 
 /* ═══ QUEUE ═══ */
@@ -292,82 +253,96 @@ function renderQueue(){
 
 window.jumpTo = function(idx){
   var q = getQueue();
-  q.forEach(function(s){ s.active = false; });
+  q.forEach(function(s){ s.active=false; });
   q[idx].active = true;
   curIdx = idx;
   var s = q[idx];
-  var nt = document.getElementById('nowTitle');
-  var nth = document.getElementById('nowThumb');
-  if(nt) nt.textContent = s.t+' — '+s.a;
-  if(nth) nth.textContent = s.e;
+  var nt=document.getElementById('nowTitle');
+  var nth=document.getElementById('nowThumb');
+  if(nt) nt.textContent=s.t+' — '+s.a;
+  if(nth) nth.textContent=s.e;
   loadVideo(s.vid);
   renderQueue();
 };
 
 window.ampVote = function(idx,btn){
-  if(amps <= 0){ showToast('NO AMPS LEFT — RECHARGES TOMORROW'); return; }
+  if(amps<=0){ showToast('NO AMPS LEFT — RECHARGES TOMORROW'); return; }
   amps--;
   getQueue()[idx].v++;
   updateAmps();
   renderQueue();
-  showToast('⚡ AMP SPENT — "'+getQueue()[idx].t+'" PUSHED UP!');
+  showToast('⚡ "'+getQueue()[idx].t+'" PUSHED UP!');
+};
+
+window.addToAura = function(idx,btn){
+  btn.classList.add('added');
+  btn.textContent='✓ Added';
+  auraAdds++;
+  var as=document.getElementById('auraStat');
+  if(as) as.textContent=auraAdds;
+  var q=getQueue();
+  if(moyoItems.length<3){
+    moyoItems.push({name:q[idx].t,emoji:q[idx].e,price:'—'});
+    renderMiniMoyo();
+  }
+  showToast('✨ '+getQueue()[idx].t+' added to your Aura!');
 };
 
 window.nextVid = function(){
-  var q = getQueue();
-  jumpTo((curIdx+1) % q.length);
+  var q=getQueue();
+  jumpTo((curIdx+1)%q.length);
 };
 
 window.prevVid = function(){
-  var q = getQueue();
-  jumpTo((curIdx-1+q.length) % q.length);
+  var q=getQueue();
+  jumpTo((curIdx-1+q.length)%q.length);
 };
 
 /* ═══ VIDEO ═══ */
 window.loadVideo = function(vid){
-  var frame = document.getElementById('ytFrame');
-  var bg = document.getElementById('playerBg');
-  if(!vid){ vid = getQueue()[curIdx].vid; }
+  var frame=document.getElementById('ytFrame');
+  var bg=document.getElementById('playerBg');
+  if(!vid){ vid=getQueue()[curIdx].vid; }
   if(frame){
-    frame.src = 'https://www.youtube.com/embed/'+vid+'?autoplay=1&modestbranding=1&rel=0&color=white';
-    frame.style.display = 'block';
+    frame.src='https://www.youtube.com/embed/'+vid+'?autoplay=1&modestbranding=1&rel=0&color=white';
+    frame.style.display='block';
   }
-  if(bg) bg.style.display = 'none';
+  if(bg) bg.style.display='none';
 };
 
 /* ═══ CHANNEL ═══ */
 window.switchCh = function(ch,btn){
-  curChannel = ch; curIdx = 0;
+  curChannel=ch; curIdx=0;
   document.querySelectorAll('.ch-btn,.spot-btn').forEach(function(b){ b.classList.remove('active'); });
   if(btn) btn.classList.add('active');
-  var chData = channels[ch];
-  var cb = document.getElementById('chBar');
-  var dt = document.getElementById('dropTxt');
-  if(cb) cb.style.background = chData.color;
-  if(dt) dt.innerHTML = chData.drop;
-  var q = chData.queue;
-  q.forEach(function(s){ s.active = false; });
-  q[0].active = true;
-  var nt = document.getElementById('nowTitle');
-  var nth = document.getElementById('nowThumb');
-  var ns = document.getElementById('nowSub');
-  if(nt) nt.textContent = q[0].t+' — '+q[0].a;
-  if(nth) nth.textContent = q[0].e;
-  if(ns) ns.textContent = ch.charAt(0).toUpperCase()+ch.slice(1)+' Channel';
-  var frame = document.getElementById('ytFrame');
-  var bg = document.getElementById('playerBg');
+  var chData=channels[ch];
+  var cb=document.getElementById('chBar');
+  var dt=document.getElementById('dropTxt');
+  if(cb) cb.style.background=chData.color;
+  if(dt) dt.innerHTML=chData.drop;
+  var q=chData.queue;
+  q.forEach(function(s){ s.active=false; });
+  q[0].active=true;
+  var nt=document.getElementById('nowTitle');
+  var nth=document.getElementById('nowThumb');
+  var ns=document.getElementById('nowSub');
+  if(nt) nt.textContent=q[0].t+' — '+q[0].a;
+  if(nth) nth.textContent=q[0].e;
+  if(ns) ns.textContent=ch.charAt(0).toUpperCase()+ch.slice(1)+' Channel';
+  var frame=document.getElementById('ytFrame');
+  var bg=document.getElementById('playerBg');
   if(frame){ frame.src=''; frame.style.display='none'; }
   if(bg){
     bg.style.display='flex';
-    var npt = document.getElementById('npTitle');
-    var npa = document.getElementById('npArtist');
-    if(npt) npt.textContent = q[0].t;
-    if(npa) npa.textContent = q[0].a;
+    var npt=document.getElementById('npTitle');
+    var npa=document.getElementById('npArtist');
+    if(npt) npt.textContent=q[0].t;
+    if(npa) npa.textContent=q[0].a;
   }
-  overlayOn = false;
-  var svo = document.getElementById('svgOv');
-  var ovb = document.getElementById('ovBtn');
-  var sh = document.getElementById('scanHint');
+  overlayOn=false;
+  var svo=document.getElementById('svgOv');
+  var ovb=document.getElementById('ovBtn');
+  var sh=document.getElementById('scanHint');
   if(svo) svo.classList.remove('on');
   if(ovb){ ovb.classList.remove('on'); ovb.textContent='✦ Fashion Scan'; }
   if(sh) sh.classList.remove('show');
@@ -378,10 +353,10 @@ window.switchCh = function(ch,btn){
 
 /* ═══ FASHION OVERLAY ═══ */
 window.toggleOverlay = function(){
-  overlayOn = !overlayOn;
-  var svo = document.getElementById('svgOv');
-  var ovb = document.getElementById('ovBtn');
-  var sh = document.getElementById('scanHint');
+  overlayOn=!overlayOn;
+  var svo=document.getElementById('svgOv');
+  var ovb=document.getElementById('ovBtn');
+  var sh=document.getElementById('scanHint');
   if(svo) svo.classList.toggle('on',overlayOn);
   if(ovb){ ovb.classList.toggle('on',overlayOn); ovb.textContent=overlayOn?'✦ Scan ON':'✦ Fashion Scan'; }
   if(sh) sh.classList.toggle('show',overlayOn);
@@ -391,34 +366,34 @@ window.toggleOverlay = function(){
 
 window.hoverR = function(el,item){
   if(!overlayOn) return;
-  var d = fashionItems[item]; if(!d) return;
-  var label = document.getElementById('regionLabel');
-  var wrap = document.getElementById('playerWrap');
+  var d=fashionItems[item]; if(!d) return;
+  var label=document.getElementById('regionLabel');
+  var wrap=document.getElementById('playerWrap');
   if(!label||!wrap) return;
-  var r = el.getBoundingClientRect();
-  var wr = wrap.getBoundingClientRect();
-  label.textContent = d.name;
-  label.style.left = Math.min(r.left-wr.left,wr.width-190)+'px';
-  label.style.top = Math.max(r.top-wr.top-26,4)+'px';
+  var r=el.getBoundingClientRect();
+  var wr=wrap.getBoundingClientRect();
+  label.textContent=d.name;
+  label.style.left=Math.min(r.left-wr.left,wr.width-190)+'px';
+  label.style.top=Math.max(r.top-wr.top-26,4)+'px';
   label.classList.add('show');
   scanCount++;
-  var sc = document.getElementById('scanStat');
-  if(sc) sc.textContent = scanCount;
+  var sc=document.getElementById('scanStat');
+  if(sc) sc.textContent=scanCount;
 };
 
 window.leaveR = function(){
   clearTimeout(labelTimeout);
-  labelTimeout = setTimeout(function(){
-    var rl = document.getElementById('regionLabel');
+  labelTimeout=setTimeout(function(){
+    var rl=document.getElementById('regionLabel');
     if(rl) rl.classList.remove('show');
   },300);
 };
 
 window.selectR = function(item){
   if(!overlayOn) return;
-  var d = fashionItems[item]; if(!d) return;
+  var d=fashionItems[item]; if(!d) return;
   document.querySelectorAll('.region').forEach(function(r){ r.classList.remove('sel'); });
-  var el = document.getElementById('r-'+item);
+  var el=document.getElementById('r-'+item);
   if(el) el.classList.add('sel');
   var fcn=document.getElementById('fcName');
   var fct=document.getElementById('fcTag');
@@ -439,8 +414,10 @@ window.selectR = function(item){
   }
   if(fcb){ fcb.textContent='Buy — '+d.bp+' on '+d.bs; fcb.onclick=function(){ showToast('OPENING CHECKOUT: '+d.name+' — '+d.bp); }; }
   if(fcs){ fcs.onclick=function(){
-    closetItems.push({id:closetItems.length+1,name:d.name,price:d.bp,emoji:'👕',cat:'tops',color:'#4a5568',worn:false});
-    showToast(d.name.toUpperCase()+' SAVED TO MOYO!');
+    moyoItems.push({name:d.name,emoji:'👕',price:d.bp});
+    if(moyoItems.length>3) moyoItems=moyoItems.slice(-3);
+    renderMiniMoyo();
+    showToast(d.name+' SAVED TO MOYO!');
     closeCard();
   }; }
   if(fc) fc.classList.add('show');
@@ -451,6 +428,28 @@ window.closeCard = function(){
   if(fc) fc.classList.remove('show');
   document.querySelectorAll('.region').forEach(function(r){ r.classList.remove('sel'); });
 };
+
+/* ═══ MINI MOYO ═══ */
+function renderMiniMoyo(){
+  var mt=document.getElementById('mmTitle');
+  var mi=document.getElementById('mmItems');
+  if(moyoItems.length===0){
+    if(mt) mt.textContent='Nothing saved yet';
+    if(mi) mi.innerHTML='<div class="mm-empty">Turn on Fashion Scan · hover clothing · save pieces</div>';
+    return;
+  }
+  if(mt) mt.textContent=moyoItems.length+' piece'+(moyoItems.length>1?'s':'')+' saved';
+  var h='';
+  moyoItems.forEach(function(item){
+    h+='<div class="mm-item">'
+      +'<div class="mm-emoji">'+item.emoji+'</div>'
+      +'<div class="mm-name">'+item.name+'</div>'
+      +'<div class="mm-price">'+item.price+'</div>'
+      +'<button class="mm-buy" onclick="showToast(\'Opening checkout!\')">$</button>'
+      +'</div>';
+  });
+  if(mi) mi.innerHTML=h;
+}
 
 /* ═══ AMPS ═══ */
 function updateAmps(){
@@ -477,7 +476,7 @@ window.spotVote = function(type){
     if(l) l.textContent=pct+'%';
   });
   updateAmps();
-  showToast('⚡ YOU AMPED THE SPOTLIGHT!');
+  showToast('⚡ YOU VOTED FOR SATORI BLU!');
 };
 
 setInterval(function(){
@@ -486,6 +485,15 @@ setInterval(function(){
   var el=document.getElementById('spotTime');
   if(el) el.textContent=m+':'+(s<10?'0':'')+s;
 },1000);
+
+/* ═══ VIEWER COUNT PULSE ═══ */
+setInterval(function(){
+  var vc=document.getElementById('viewerCount');
+  var vs=document.getElementById('viewStat');
+  var count=1100+Math.floor(Math.random()*80);
+  if(vc) vc.textContent=count.toLocaleString()+' watching';
+  if(vs) vs.textContent=(count/1000).toFixed(1)+'K';
+},3500);
 
 /* ═══ AURA ═══ */
 function renderAuras(){
@@ -511,7 +519,7 @@ function renderAuras(){
 window.voteAura = function(id){
   var a=auras.find(function(x){ return x.id===id; });
   if(!a){ return; }
-  if(!a.published){ showToast('Publish your Aura first to receive votes!'); return; }
+  if(!a.published){ showToast('Publish your Aura first!'); return; }
   a.votes++;
   renderAuras();
   showToast('⚡ Aura "'+a.name+'" Amped!');
@@ -527,99 +535,6 @@ window.createAura = function(){
   showToast('New Aura created! Add tracks and publish it.');
 };
 
-/* ═══ MOYO CLOSET ═══ */
-function filteredItems(){
-  if(curFilter==='all') return closetItems;
-  return closetItems.filter(function(i){ return i.cat===curFilter; });
-}
-
-function renderCloset(){
-  var items=filteredItems();
-  var ic=document.getElementById('itemCount');
-  if(ic) ic.textContent='('+closetItems.length+' pieces)';
-
-  /* Rack view */
-  var rv=document.getElementById('rackView');
-  if(rv){
-    if(items.length===0){
-      rv.innerHTML='<div class="empty-closet">Save pieces from videos to fill your closet</div>';
-    } else {
-      var html='';
-      items.forEach(function(item){
-        html+='<div class="hanger'+(item.worn?' worn':'')+'" onclick="wearItem('+item.id+')">'
-          +'<div class="hanger-hook"></div>'
-          +'<div class="hanger-bar"></div>'
-          +'<div class="hanger-card" style="background:'+item.color+'22;">'+item.emoji+'</div>'
-          +'<div class="hanger-name">'+item.name+'</div>'
-          +'<div class="hanger-price">'+item.price+'</div>'
-          +'</div>';
-      });
-      rv.innerHTML=html;
-    }
-  }
-
-  /* Grid view */
-  var gv=document.getElementById('gridView');
-  if(gv){
-    if(items.length===0){
-      gv.innerHTML='<div class="empty-closet">Save pieces from videos to fill your closet</div>';
-    } else {
-      var ghtml='';
-      items.forEach(function(item){
-        ghtml+='<div class="grid-item'+(item.worn?' worn':'')+'" onclick="wearItem('+item.id+')">'
-          +'<div class="grid-emoji">'+item.emoji+'</div>'
-          +'<div class="grid-name">'+item.name+'</div>'
-          +'<div class="grid-price">'+item.price+'</div>'
-          +'</div>';
-      });
-      gv.innerHTML=ghtml;
-    }
-  }
-
-  updateAvatar();
-}
-
-window.wearItem = function(id){
-  var item=closetItems.find(function(i){ return i.id===id; });
-  if(!item) return;
-  item.worn=!item.worn;
-  renderCloset();
-  showToast(item.worn?'Your Moyo is wearing the '+item.name+'!':item.name+' removed from Moyo');
-};
-
-function updateAvatar(){
-  var tops=closetItems.filter(function(i){ return i.cat==='tops'&&i.worn; });
-  var bottoms=closetItems.filter(function(i){ return i.cat==='bottoms'&&i.worn; });
-  var shoes=closetItems.filter(function(i){ return i.cat==='shoes'&&i.worn; });
-  var mt=document.getElementById('mTop');
-  var ml=document.getElementById('mLegL');
-  var mr=document.getElementById('mLegR');
-  var sl=document.getElementById('mShoeL');
-  var sr=document.getElementById('mShoeR');
-  if(mt) mt.style.background=tops.length?tops[0].color:'#4a5568';
-  if(ml) ml.style.background=bottoms.length?bottoms[0].color:'#1a202c';
-  if(mr) mr.style.background=bottoms.length?bottoms[0].color:'#1a202c';
-  if(sl) sl.style.background=shoes.length?shoes[0].color:'#ffffff';
-  if(sr) sr.style.background=shoes.length?shoes[0].color:'#ffffff';
-}
-
-window.setView = function(view,btn){
-  curView=view;
-  document.querySelectorAll('.view-btn').forEach(function(b){ b.classList.remove('active'); });
-  if(btn) btn.classList.add('active');
-  var rv=document.getElementById('rackView');
-  var gv=document.getElementById('gridView');
-  if(rv) rv.style.display=view==='rack'?'flex':'none';
-  if(gv) gv.style.display=view==='grid'?'grid':'none';
-};
-
-window.filterCloset = function(cat,el){
-  curFilter=cat;
-  document.querySelectorAll('.filter-pill').forEach(function(p){ p.classList.remove('active'); });
-  if(el) el.classList.add('active');
-  renderCloset();
-};
-
 /* ═══ ARTIST PORTAL ═══ */
 window.applyForSlot = function(type){
   var af=document.getElementById('applyForm');
@@ -631,7 +546,7 @@ window.applyForSlot = function(type){
 window.submitApplication = function(){
   var af=document.getElementById('applyForm');
   if(af) af.style.display='none';
-  showToast('Application submitted! We will review and contact you within 48 hours.');
+  showToast('Application submitted! We will contact you within 48 hours.');
 };
 
 /* ═══ PROFILE ═══ */
@@ -639,10 +554,8 @@ function renderProfile(){
   if(!currentUser) return;
   var pa=document.getElementById('profileAv');
   var pn=document.getElementById('profileName');
-  var mn=document.getElementById('moyoUserName');
   if(pa) pa.textContent=currentUser.name.charAt(0).toUpperCase();
   if(pn) pn.textContent=currentUser.name;
-  if(mn) mn.textContent=currentUser.name+"'s Moyo";
 }
 
 /* ═══ TOAST ═══ */
@@ -658,23 +571,6 @@ window.showToast = showToast;
 /* ═══ INIT ═══ */
 updateAmps();
 renderQueue();
-   /* Aura add */
-window.addToAura = function(idx, btn){
-  btn.classList.add('added');
-  btn.textContent = '✓ Added';
-  var q = getQueue();
-  var as = document.getElementById('auraStat');
-  if(as) as.textContent = parseInt(as.textContent||0)+1;
-  showToast('✨ '+q[idx].t+' added to your Aura!');
-};
-
-/* Viewer count pulse */
-setInterval(function(){
-  var vc = document.getElementById('viewerCount');
-  var vs = document.getElementById('viewStat');
-  var count = 1100 + Math.floor(Math.random()*80);
-  if(vc) vc.textContent = count.toLocaleString()+' watching';
-  if(vs) vs.textContent = (count/1000).toFixed(1)+'K';
-}, 3500);
+renderMiniMoyo();
 
 }); /* END DOMContentLoaded */
