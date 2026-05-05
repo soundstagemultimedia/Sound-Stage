@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Satori Blu — SoundStage Indie Spotlight</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --black:#000;--s1:#070707;--s2:#0d0d0d;--s3:#141414;
+  --amber:#F5A623;--amber-g:rgba(245,166,35,0.1);
+  --teal:#00E5FF;--teal-g:rgba(0,229,255,0.1);
+  --purple:#CC44FF;--purple-g:rgba(204,68,255,0.1);
+  --border:rgba(0,229,255,0.2);--border2:rgba(255,255,255,0.05);
+  --text:#f0f0f0;--muted:#555;
+}
+html,body{width:100%;min-height:100vh;background:var(--black);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden;}
+
+/* BG */
+.bg{position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 50%,rgba(0,229,255,0.06) 0%,transparent 55%),
+    radial-gradient(ellipse at 80% 20%,rgba(204,68,255,0.06) 0%,transparent 50%),
+    radial-gradient(ellipse at 60% 80%,rgba(245,166,35,0.04) 0%,transparent 40%);
+}
+.scanlines{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,0.004) 3px,rgba(255,255,255,0.004) 4px);}
+
+/* BACK */
+.back{position:fixed;top:16px;left:20px;z-index:100;}
+.back-btn{padding:6px 16px;background:rgba(0,0,0,0.8);border:1px solid var(--border);border-radius:20px;color:var(--teal);font-size:10px;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;display:inline-block;transition:all 0.2s;backdrop-filter:blur(8px);}
+.back-btn:hover{background:var(--teal-g);color:#fff;}
+
+/* LIVE BADGE */
+.live-strip{position:fixed;top:16px;right:20px;z-index:100;display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(0,0,0,0.8);border:1px solid rgba(255,59,59,0.4);border-radius:20px;backdrop-filter:blur(8px);}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#FF3B3B;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+.live-txt{font-size:10px;letter-spacing:2px;color:#FF3B3B;font-family:'Rajdhani',sans-serif;text-transform:uppercase;}
+.live-count{font-size:10px;color:var(--muted);letter-spacing:1px;}
+
+/* HERO SECTION */
+.hero{position:relative;z-index:5;display:grid;grid-template-columns:1fr 1fr;min-height:100vh;max-width:1200px;margin:0 auto;padding:60px 24px 24px;}
+
+/* LEFT — ARTIST */
+.artist-side{display:flex;flex-direction:column;justify-content:center;padding-right:32px;}
+
+.artist-photo-wrap{
+  position:relative;width:100%;max-width:440px;
+  margin-bottom:28px;
+  border-radius:16px;overflow:hidden;
+  border:1px solid var(--border);
+  box-shadow:
+    0 0 40px rgba(0,229,255,0.15),
+    0 0 80px rgba(204,68,255,0.08),
+    inset 0 0 40px rgba(0,0,0,0.4);
+}
+.artist-photo{width:100%;height:480px;object-fit:cover;object-position:center top;display:block;filter:contrast(1.05) saturate(1.1);}
+
+/* Photo overlay effects */
+.photo-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,0.8) 100%);
+  pointer-events:none;
+}
+/* Teal scan line effect */
+.scan-line{
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--teal),transparent);
+  animation:scan-down 4s ease-in-out infinite;
+  pointer-events:none;opacity:0.4;
+}
+@keyframes scan-down{0%{top:0;opacity:0;}10%{opacity:0.6;}90%{opacity:0.4;}100%{top:100%;opacity:0;}}
+
+/* Teal corner accents */
+.corner-tl,.corner-br{position:absolute;width:24px;height:24px;pointer-events:none;}
+.corner-tl{top:10px;left:10px;border-top:2px solid var(--teal);border-left:2px solid var(--teal);}
+.corner-br{bottom:10px;right:10px;border-bottom:2px solid var(--teal);border-right:2px solid var(--teal);}
+
+/* Artist name on photo */
+.on-photo-name{
+  position:absolute;bottom:16px;left:16px;right:16px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.artist-name-big{
+  font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;
+  letter-spacing:3px;color:#fff;
+  text-shadow:0 0 20px rgba(0,229,255,0.8),0 0 40px rgba(204,68,255,0.4);
+}
+.artist-genre-tag{display:flex;gap:6px;flex-wrap:wrap;}
+.genre-pill{font-size:9px;padding:3px 10px;border-radius:10px;letter-spacing:2px;text-transform:uppercase;font-family:'Rajdhani',sans-serif;}
+.gp-teal{background:var(--teal-g);border:1px solid var(--border);color:var(--teal);}
+.gp-purple{background:var(--purple-g);border:1px solid rgba(204,68,255,0.3);color:var(--purple);}
+.gp-amber{background:var(--amber-g);border:1px solid rgba(245,166,35,0.3);color:var(--amber);}
+
+/* Artist info below photo */
+.artist-bio{
+  background:var(--s1);border:1px solid var(--border2);
+  border-radius:12px;padding:16px;margin-bottom:14px;
+}
+.bio-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;}
+.bio-text span{color:var(--teal);}
+
+.artist-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.astat{background:var(--s2);border:1px solid var(--border2);border-radius:10px;padding:10px 8px;text-align:center;transition:all 0.2s;}
+.astat:hover{border-color:var(--border);}
+.astat-n{font-size:18px;font-weight:700;color:var(--teal);font-family:'Orbitron',sans-serif;}
+.astat-l{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+
+.social-row{display:flex;gap:8px;}
+.soc-btn{padding:8px 16px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--muted);font-size:10px;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:1px;transition:all 0.2s;display:flex;align-items:center;gap:6px;text-decoration:none;}
+.soc-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-g);}
+
+/* RIGHT — VIDEO + VOTING */
+.video-side{display:flex;flex-direction:column;gap:14px;}
+
+/* Now playing header */
+.np-header{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.np-label{font-size:10px;letter-spacing:3px;color:var(--teal);text-transform:uppercase;font-family:'Rajdhani',sans-serif;}
+.timer-wrap{display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--s2);border:1px solid rgba(255,59,59,0.3);border-radius:20px;}
+.timer-dot{width:6px;height:6px;border-radius:50%;background:#FF3B3B;animation:blink 1s infinite;}
+.timer-val{font-size:14px;font-weight:700;color:#FF3B3B;font-family:'Orbitron',sans-serif;}
+.timer-lbl{font-size:9px;color:var(--muted);letter-spacing:1px;}
+
+/* Video player */
+.video-wrap{
+  position:relative;border-radius:14px;overflow:hidden;
+  border:1px solid var(--border);
+  box-shadow:0 0 30px rgba(0,229,255,0.1);
+}
+.video-wrap iframe{width:100%;height:340px;border:none;display:block;}
+
+/* Teal frame accent */
+.video-wrap::before{
+  content:'';position:absolute;inset:0;
+  border-radius:14px;
+  box-shadow:inset 0 0 20px rgba(0,229,255,0.08);
+  pointer-events:none;z-index:2;
+}
+
+/* Song info */
+.song-info{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--s1);border:1px solid var(--border2);border-radius:10px;}
+.song-thumb{width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,rgba(0,229,255,0.2),rgba(204,68,255,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;border:1px solid var(--border);flex-shrink:0;}
+.song-details{flex:1;}
+.song-title{font-size:15px;font-weight:700;color:var(--text);font-family:'Rajdhani',sans-serif;letter-spacing:1px;}
+.song-artist{font-size:11px;color:var(--teal);}
+.song-tag{font-size:9px;padding:2px 8px;border-radius:8px;background:var(--amber-g);border:1px solid rgba(245,166,35,0.3);color:var(--amber);letter-spacing:1px;font-family:'Rajdhani',sans-serif;}
+
+/* VOTING SECTION */
+.vote-section{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:18px;position:relative;overflow:hidden;}
+.vote-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),var(--purple),transparent);}
+.vote-title{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:14px;font-family:'Rajdhani',sans-serif;}
+.vote-btns{display:flex;gap:8px;margin-bottom:16px;}
+.vote-btn{flex:1;padding:12px 8px;border-radius:10px;border:1px solid var(--border2);background:transparent;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:1px;text-transform:uppercase;transition:all 0.25s;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.vote-btn span.emoji{font-size:22px;}
+.vote-btn:hover{transform:translateY(-2px);}
+.vb-fire:hover{border-color:#FF3B3B;color:#FF3B3B;background:rgba(255,59,59,0.08);box-shadow:0 4px 16px rgba(255,59,59,0.15);}
+.vb-love:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-g);box-shadow:0 4px 16px rgba(204,68,255,0.15);}
+.vb-amp:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-g);box-shadow:0 4px 16px rgba(245,166,35,0.15);}
+.vb-teal:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-g);box-shadow:0 4px 16px rgba(0,229,255,0.15);}
+.vote-btn.voted-fire{border-color:#FF3B3B;color:#FF3B3B;background:rgba(255,59,59,0.1);}
+.vote-btn.voted-love{border-color:var(--purple);color:var(--purple);background:var(--purple-g);}
+.vote-btn.voted-amp{border-color:var(--amber);color:var(--amber);background:var(--amber-g);}
+.vote-btn.voted-teal{border-color:var(--teal);color:var(--teal);background:var(--teal-g);}
+.vote-count{font-size:11px;color:var(--muted);font-family:'Orbitron',sans-serif;}
+
+/* Feedback bars */
+.fb-section{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.fb-row{display:flex;align-items:center;gap:8px;}
+.fb-label{font-size:10px;color:var(--muted);width:44px;font-family:'Rajdhani',sans-serif;letter-spacing:1px;}
+.fb-track{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
+.fb-fill{height:100%;border-radius:3px;transition:width 0.5s ease;}
+.fb-pct{font-size:10px;width:30px;text-align:right;font-family:'Orbitron',sans-serif;}
+.fb-count{font-size:9px;color:var(--muted);width:36px;text-align:right;}
+
+/* Total votes */
+.total-votes{text-align:center;padding:10px;background:var(--s2);border-radius:8px;border:1px solid var(--border2);}
+.tv-n{font-size:22px;font-weight:700;color:var(--teal);font-family:'Orbitron',sans-serif;}
+.tv-l{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+
+/* COMMENT SECTION */
+.comments-section{background:var(--s1);border:1px solid var(--border2);border-radius:14px;padding:16px;}
+.comments-title{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;font-family:'Rajdhani',sans-serif;}
+.comment-input-wrap{display:flex;gap:8px;margin-bottom:14px;}
+.comment-input{flex:1;padding:9px 12px;background:var(--s2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;transition:border-color 0.2s;}
+.comment-input:focus{outline:none;border-color:var(--teal);}
+.comment-send{padding:9px 16px;background:var(--teal);color:#000;border:none;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:opacity 0.2s;}
+.comment-send:hover{opacity:0.85;}
+.comments-list{display:flex;flex-direction:column;gap:10px;max-height:180px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.comment-item{display:flex;gap:10px;align-items:flex-start;}
+.c-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;flex-shrink:0;}
+.c-content{flex:1;}
+.c-user{font-size:11px;font-weight:700;color:var(--text);font-family:'Rajdhani',sans-serif;}
+.c-text{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px;line-height:1.4;}
+.c-time{font-size:9px;color:var(--muted);margin-top:3px;}
+
+/* BOTTOM CTA */
+.cta-section{position:relative;z-index:5;padding:24px;max-width:1200px;margin:0 auto;display:flex;gap:12px;flex-wrap:wrap;}
+.cta-card{flex:1;min-width:220px;background:var(--s1);border:1px solid var(--border2);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:8px;}
+.cta-card.featured{border-color:var(--border);}
+.cta-icon{font-size:28px;}
+.cta-title{font-size:14px;font-weight:700;color:var(--text);font-family:'Rajdhani',sans-serif;letter-spacing:1px;}
+.cta-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.cta-btn{padding:9px 18px;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;cursor:pointer;transition:all 0.2s;text-align:center;border:none;}
+.cta-btn-teal{background:var(--teal);color:#000;}
+.cta-btn-teal:hover{opacity:0.85;}
+.cta-btn-outline{background:transparent;border:1px solid var(--border2);color:var(--muted);}
+.cta-btn-outline:hover{border-color:var(--teal);color:var(--teal);}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--teal);color:#000;padding:8px 20px;border-radius:16px;font-size:11px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:9999;white-space:nowrap;font-family:'Rajdhani',sans-serif;letter-spacing:1px;font-weight:700;}
+.toast.show{opacity:1;}
+
+/* Animations */
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px rgba(0,229,255,0.1);}50%{box-shadow:0 0 40px rgba(0,229,255,0.25),0 0 60px rgba(204,68,255,0.1);}}
+.artist-photo-wrap{animation:glow-pulse 4s ease-in-out infinite;}
+  </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="scanlines"></div>
+
+<!-- BACK -->
+<div class="back"><a href="index.html" class="back-btn">← SoundStage</a></div>
+
+<!-- LIVE BADGE -->
+<div class="live-strip">
+  <div class="live-dot"></div>
+  <div class="live-txt">Indie Spotlight</div>
+  <div class="live-count" id="watchCount">1,247 watching</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+
+  <!-- LEFT — ARTIST INFO -->
+  <div class="artist-side">
+
+    <div class="artist-photo-wrap">
+      <img src="satori-blu.jpg" alt="Satori Blu" class="artist-photo"/>
+      <div class="photo-overlay"></div>
+      <div class="scan-line"></div>
+      <div class="corner-tl"></div>
+      <div class="corner-br"></div>
+      <div class="on-photo-name">
+        <div class="artist-name-big">SATORI BLU</div>
+        <div class="artist-genre-tag">
+          <span class="genre-pill gp-teal">R&B / Soul</span>
+          <span class="genre-pill gp-purple">Alt Pop</span>
+          <span class="genre-pill gp-amber">Indie</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="artist-bio">
+      <div class="bio-text">
+        Satori Blu is an independent R&B and Soul artist redefining what it means to create without limits.
+        With a sound that blends <span>raw emotion, cinematic production</span> and unapologetic energy,
+        she has built a loyal following through pure talent and authenticity.
+        Featured on SoundStage as part of the <span>Indie Spotlight</span> — her 3 minutes.
+        The world votes. Right now.
+      </div>
+    </div>
+
+    <div class="artist-stats">
+      <div class="astat"><div class="astat-n" id="voteCount">847</div><div class="astat-l">Votes</div></div>
+      <div class="astat"><div class="astat-n">1.2K</div><div class="astat-l">Watching</div></div>
+      <div class="astat"><div class="astat-n">94%</div><div class="astat-l">Approval</div></div>
+      <div class="astat"><div class="astat-n">2:41</div><div class="astat-l">Remaining</div></div>
+    </div>
+
+    <div class="social-row">
+      <a href="#" class="soc-btn" onclick="showToast('Following Satori Blu!')">👤 Follow</a>
+      <a href="#" class="soc-btn" onclick="showToast('Opening Satori Blu music...')">🎵 Music</a>
+      <a href="#" class="soc-btn" onclick="showToast('Share link copied!')">↗ Share</a>
+      <a href="#" class="soc-btn" onclick="showToast('Opening merch store...')">👕 Merch</a>
+    </div>
+  </div>
+
+  <!-- RIGHT — VIDEO + VOTING -->
+  <div class="video-side">
+
+    <div class="np-header">
+      <div class="np-label">⚡ Live Indie Spotlight — Vote Now</div>
+      <div class="timer-wrap">
+        <div class="timer-dot"></div>
+        <div class="timer-val" id="timerVal">2:41</div>
+        <div class="timer-lbl">remaining</div>
+      </div>
+    </div>
+
+    <!-- YOUTUBE VIDEO -->
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/JmKz4LwfhkI?autoplay=0&modestbranding=1&rel=0&color=white"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- SONG INFO -->
+    <div class="song-info">
+      <div class="song-thumb">🎵</div>
+      <div class="song-details">
+        <div class="song-title">Satori Blu — Indie Spotlight</div>
+        <div class="song-artist">SoundStage Exclusive Premiere</div>
+      </div>
+      <div class="song-tag">PREMIERE</div>
+    </div>
+
+    <!-- VOTING -->
+    <div class="vote-section">
+      <div class="vote-title">Cast Your Vote — What Do You Think?</div>
+      <div class="vote-btns">
+        <button class="vote-btn vb-fire" id="vb-fire" onclick="castVote('fire',this)">
+          <span class="emoji">🔥</span>
+          <span>Fire</span>
+          <span class="vote-count" id="vc-fire">312</span>
+        </button>
+        <button class="vote-btn vb-love" id="vb-love" onclick="castVote('love',this)">
+          <span class="emoji">💜</span>
+          <span>Love It</span>
+          <span class="vote-count" id="vc-love">284</span>
+        </button>
+        <button class="vote-btn vb-amp" id="vb-amp" onclick="castVote('amp',this)">
+          <span class="emoji">⚡</span>
+          <span>Amp It</span>
+          <span class="vote-count" id="vc-amp">167</span>
+        </button>
+        <button class="vote-btn vb-teal" id="vb-teal" onclick="castVote('teal',this)">
+          <span class="emoji">✨</span>
+          <span>Iconic</span>
+          <span class="vote-count" id="vc-teal">84</span>
+        </button>
+      </div>
+
+      <div class="fb-section">
+        <div class="fb-row">
+          <div class="fb-label">Fire</div>
+          <div class="fb-track"><div class="fb-fill" id="fb-fire" style="width:37%;background:#FF3B3B;"></div></div>
+          <div class="fb-pct" style="color:#FF3B3B;" id="fp-fire">37%</div>
+          <div class="fb-count" id="fc-fire">312</div>
+        </div>
+        <div class="fb-row">
+          <div class="fb-label">Love</div>
+          <div class="fb-track"><div class="fb-fill" id="fb-love" style="width:34%;background:var(--purple);"></div></div>
+          <div class="fb-pct" style="color:var(--purple);" id="fp-love">34%</div>
+          <div class="fb-count" id="fc-love">284</div>
+        </div>
+        <div class="fb-row">
+          <div class="fb-label">Amp</div>
+          <div class="fb-track"><div class="fb-fill" id="fb-amp" style="width:20%;background:var(--amber);"></div></div>
+          <div class="fb-pct" style="color:var(--amber);" id="fp-amp">20%</div>
+          <div class="fb-count" id="fc-amp">167</div>
+        </div>
+        <div class="fb-row">
+          <div class="fb-label">Iconic</div>
+          <div class="fb-track"><div class="fb-fill" id="fb-teal" style="width:10%;background:var(--teal);"></div></div>
+          <div class="fb-pct" style="color:var(--teal);" id="fp-teal">10%</div>
+          <div class="fb-count" id="fc-teal">84</div>
+        </div>
+      </div>
+
+      <div class="total-votes">
+        <div class="tv-n" id="totalVotes">847</div>
+        <div class="tv-l">Total Votes Cast</div>
+      </div>
+    </div>
+
+    <!-- COMMENTS -->
+    <div class="comments-section">
+      <div class="comments-title">Live Reactions</div>
+      <div class="comment-input-wrap">
+        <input type="text" class="comment-input" id="commentInput" placeholder="Drop your thoughts on Satori Blu..."/>
+        <button class="comment-send" onclick="sendComment()">Send</button>
+      </div>
+      <div class="comments-list" id="commentsList">
+        <div class="comment-item">
+          <div class="c-av" style="background:#F5A623;">J</div>
+          <div class="c-content"><div class="c-user">jade_wav</div><div class="c-text">She is different omg the energy is REAL 🔥🔥</div><div class="c-time">just now</div></div>
+        </div>
+        <div class="comment-item">
+          <div class="c-av" style="background:#CC44FF;">M</div>
+          <div class="c-content"><div class="c-user">milesbeats</div><div class="c-text">The production on this is insane. Who mixed this??</div><div class="c-time">12s ago</div></div>
+        </div>
+        <div class="comment-item">
+          <div class="c-av" style="background:#00E5FF;color:#000;">R</div>
+          <div class="c-content"><div class="c-user">ren.culture</div><div class="c-text">SoundStage putting on for the indie artists fr. Satori Blu deserves all the streams</div><div class="c-time">28s ago</div></div>
+        </div>
+        <div class="comment-item">
+          <div class="c-av" style="background:#2ECC71;color:#000;">W</div>
+          <div class="c-content"><div class="c-user">wavysouls</div><div class="c-text">That butterfly pendant though 🦋 the whole aesthetic is giving everything</div><div class="c-time">45s ago</div></div>
+        </div>
+        <div class="comment-item">
+          <div class="c-av" style="background:#FF3B3B;">K</div>
+          <div class="c-content"><div class="c-user">khemra_ss</div><div class="c-text">Welcome to SoundStage Satori Blu — the culture is ready for you 🙏🔥</div><div class="c-time">1m ago</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="cta-section">
+  <div class="cta-card featured">
+    <div class="cta-icon">🎤</div>
+    <div class="cta-title">Are You an Artist?</div>
+    <div class="cta-desc">Get your 3 minutes in front of the world. Satori Blu did it. You can too. Apply for your Indie Spotlight slot.</div>
+    <button class="cta-btn cta-btn-teal" onclick="showToast('Opening artist application...')">Apply for a Slot — $49</button>
+  </div>
+  <div class="cta-card">
+    <div class="cta-icon">👗</div>
+    <div class="cta-title">Fashion Designer?</div>
+    <div class="cta-desc">Showcase your collection live to SoundStage's global audience. Real reactions. Real sales. Real exposure.</div>
+    <button class="cta-btn cta-btn-outline" onclick="showToast('Opening designer application...')">Designer Slot — $79</button>
+  </div>
+  <div class="cta-card">
+    <div class="cta-icon">✨</div>
+    <div class="cta-title">Save Satori Blu to Aura</div>
+    <div class="cta-desc">Add her music to your Aura playlist and share it with the SoundStage community. Earn Style Points.</div>
+    <button class="cta-btn cta-btn-outline" onclick="showToast('Satori Blu added to your Aura! +50 Style Points')">Add to My Aura</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══ TIMER ═══ */
+var secs = 161;
+var timerInterval = setInterval(function(){
+  if(secs > 0) secs--;
+  else { clearInterval(timerInterval); document.getElementById('timerVal').textContent='ENDED'; }
+  var m=Math.floor(secs/60), s=secs%60;
+  var el=document.getElementById('timerVal');
+  if(el) el.textContent=m+':'+(s<10?'0':'')+s;
+  /* Update stats */
+  var vc=document.getElementById('voteCount');
+  var wc=document.getElementById('watchCount');
+  if(secs%7===0 && votes.total>0){
+    if(vc) vc.textContent=(votes.total+Math.floor(Math.random()*3)).toLocaleString();
+    if(wc) wc.textContent=(1247+Math.floor(Math.random()*20)-10).toLocaleString()+' watching';
+  }
+}, 1000);
+
+/* ═══ VOTING ═══ */
+var votes = {fire:312, love:284, amp:167, teal:84, total:847};
+var userVoted = false;
+
+function castVote(type, btn){
+  if(userVoted){ showToast('You already voted! Thanks for supporting Satori Blu 🔥'); return; }
+  userVoted = true;
+  votes[type]++;
+  votes.total++;
+
+  /* Update button styles */
+  document.querySelectorAll('.vote-btn').forEach(function(b){ b.style.opacity='0.5'; });
+  btn.style.opacity='1';
+  btn.classList.add('voted-'+type);
+
+  /* Recalculate percentages */
+  updateBars();
+  updateCounts();
+
+  /* Update total */
+  var tv=document.getElementById('totalVotes');
+  var vc=document.getElementById('voteCount');
+  if(tv) tv.textContent=votes.total.toLocaleString();
+  if(vc) vc.textContent=votes.total.toLocaleString();
+
+  var msgs={
+    fire:'🔥 FIRE vote cast for Satori Blu!',
+    love:'💜 LOVE IT vote cast for Satori Blu!',
+    amp:'⚡ AMPED Satori Blu on SoundStage!',
+    teal:'✨ ICONIC vote cast for Satori Blu!'
+  };
+  showToast(msgs[type]);
+}
+
+function updateBars(){
+  var keys=['fire','love','amp','teal'];
+  keys.forEach(function(k){
+    var pct=Math.round(votes[k]/votes.total*100);
+    var fill=document.getElementById('fb-'+k);
+    var pctEl=document.getElementById('fp-'+k);
+    if(fill) fill.style.width=pct+'%';
+    if(pctEl) pctEl.textContent=pct+'%';
+  });
+}
+
+function updateCounts(){
+  var keys=['fire','love','amp','teal'];
+  keys.forEach(function(k){
+    var el=document.getElementById('vc-'+k);
+    var fc=document.getElementById('fc-'+k);
+    if(el) el.textContent=votes[k].toLocaleString();
+    if(fc) fc.textContent=votes[k].toLocaleString();
+  });
+}
+
+/* Simulate live votes coming in */
+setInterval(function(){
+  if(Math.random() > 0.6){
+    var keys=['fire','love','amp','teal'];
+    var k=keys[Math.floor(Math.random()*keys.length)];
+    votes[k]++;
+    votes.total++;
+    updateBars();
+    updateCounts();
+    var tv=document.getElementById('totalVotes');
+    var vc=document.getElementById('voteCount');
+    if(tv) tv.textContent=votes.total.toLocaleString();
+    if(vc) vc.textContent=votes.total.toLocaleString();
+  }
+},2000);
+
+/* ═══ COMMENTS ═══ */
+var commentColors=['#F5A623','#CC44FF','#00E5FF','#2ECC71','#FF3B3B','#3b82f6'];
+var commentCount=5;
+
+function sendComment(){
+  var input=document.getElementById('commentInput');
+  var txt=input.value.trim();
+  if(!txt){ showToast('Write something first!'); return; }
+  var list=document.getElementById('commentsList');
+  var color=commentColors[Math.floor(Math.random()*commentColors.length)];
+  var isLight=['#F5A623','#00E5FF','#2ECC71'].includes(color);
+  var div=document.createElement('div');
+  div.className='comment-item';
+  div.innerHTML='<div class="c-av" style="background:'+color+';color:'+(isLight?'#000':'#fff')+';">Y</div>'
+    +'<div class="c-content">'
+    +'<div class="c-user">You</div>'
+    +'<div class="c-text">'+txt+'</div>'
+    +'<div class="c-time">just now</div>'
+    +'</div>';
+  list.insertBefore(div, list.firstChild);
+  input.value='';
+  showToast('Comment posted!');
+  commentCount++;
+}
+
+/* ═══ TOAST ═══ */
+function showToast(msg){
+  var t=document.getElementById('toast');
+  if(!t) return;
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); },2400);
+}
+</script>
+</body>
+</html>
